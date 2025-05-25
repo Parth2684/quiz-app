@@ -18,18 +18,52 @@ model User {
   id          String         @id @default(uuid())
   name        String      
   email       String      @unique
-  password    String      
+  password    String    
+  attemptedQuiz QuizAttempt[]  
 }
 
 model Admin {
   adminId           String         @id
   name              String
   password          String
+  createdQuiz    Quiz[]
 }
 
 model Quiz {
   id                String         @id @default(uuid())
-  createdBy         String      
-  attemptedBy       String
-  questions         
+  name              String
+  createdById         String      
+  questions         Question[]
+  createdBy         Admin  @relation(fields: [createdById], references: [adminId])
+  quizAttempt     QuizAttempt[]
 }
+
+model Question {
+  id                String      @id @default(uuid())
+  question          String      
+  quizId            String
+  quiz              Quiz  @relation(fields: [quizId], references: [id])
+  options           Option[]
+}
+
+model Option {
+  id                String      @id @default(uuid())
+  option           String
+  isCorrect         Boolean 
+  questionId        String
+  question          Question  @relation(fields: [questionId], references: [id])
+}
+
+model QuizAttempt {
+  id              String      @id @default(uuid())
+  userId          String      
+  quizId          String
+  score           Int
+  questionIds    String[]
+  optionIds       String[]
+  attemptedAt     DateTime    @default(now())
+  user            User  @relation(fields: [userId], references: [id])
+  quiz            Quiz  @relation(fields: [quizId], references: [id])
+  @@unique([userId, quizId])
+}
+
