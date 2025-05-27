@@ -18,8 +18,11 @@ model User {
   id          String         @id @default(uuid())
   name        String      
   email       String      @unique
-  password    String    
+  password    String?
+  provider    String    
   attemptedQuiz QuizAttempt[]  
+  verified    Boolean
+  jwt         String? 
 }
 
 model Admin {
