@@ -2,12 +2,11 @@ import prisma from "@/lib/singleton";
 import { InitSignupSchema } from "@/types/signup/init";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
-import { Resend } from "resend";
+import { verifyEmail } from "@/lib/email";
 
 
 export async function POST (req: NextRequest) {
     try {
-        const resend = new Resend(process.env.RESEND_API_KEY)
         const secret = process.env.NEXT_AUTH_SECRET as string
         const body = await req.json()
         const response = InitSignupSchema.safeParse(body)
@@ -20,32 +19,58 @@ export async function POST (req: NextRequest) {
 
         const { name, email } = response.data
 
-        
-        const user = await prisma.user.create({
-            data: {
-                email,
-                name,
-                provider: "Credentials",
-                verified: false,
-            }
-        })
+        const existingUser = await prisma.user.findUnique({ where: { email } })
 
-        const userId = user.id
-        
+        if(!existingUser) {
+            const user = await prisma.user.create({
+                data: {
+                    email,
+                    name,
+                    provider: "Credentials",
+                    verified: false,
+                }
+            })
+    
+            const userId = user.id
+            
+            const token = jwt.sign({
+                userId
+            }, secret, { expiresIn:"1h" })
+    
+            await Promise.all([
+                prisma.user.update({
+                    where: { id: userId },
+                    data: { jwt: token }
+                }),
+                verifyEmail(email, token, name)
+            ])
+            
+            return NextResponse.json({
+                msg: "Email sent successfully"
+            }, { status: 200 })
+        }
+
+        if(existingUser.verified === true) {
+            return NextResponse.json({ msg: "User Already Exists and Email is also verified" }, { status: 409 })
+        }
+
+        const userId = existingUser.id
         const token = jwt.sign({
             userId
-        }, secret)
+        }, secret, { expiresIn: "1hr" })
 
-        await resend.emails.send({
-            from: "Quizzo <onboarding@resend.dev>",
-            to: email,
-            subject: "Verify your email",
-            html: `<p>Hi ${name}, click <a href="${process.env.NEXT_PUBLIC_BASE_URL}/set-password?token=${token}">here</a> to verify your email and set the password </p>`
-        })
-        
+        await Promise.all([
+            prisma.user.update({
+                where: { id: userId },
+                data: { jwt: token }
+            }),
+            verifyEmail(email, token, name)
+        ])
+
         return NextResponse.json({
             msg: "Email sent successfully"
         }, { status: 200 })
+        
     } catch (error) {
         console.error("Error in sending email in init signup", error)
         return NextResponse.json({
