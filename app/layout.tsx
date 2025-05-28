@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-gradient-animate font-poppins">
+      <body className="bg-gradient-animate font-poppins opacity-90">
         <Toaster position="top-center" reverseOrder={false} />
         {children}
       </body>

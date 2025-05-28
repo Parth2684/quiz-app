@@ -36,11 +36,13 @@ export async function POST (req: NextRequest) {
             const token = jwt.sign({
                 userId
             }, secret, { expiresIn:"1h" })
-    
+
+            const jwtExpiry = new Date(Date.now() + 60 * 60 * 1000)
+
             await Promise.all([
                 prisma.user.update({
                     where: { id: userId },
-                    data: { jwt: token }
+                    data: { jwt: token, jwtExpiry }
                 }),
                 verifyEmail(email, token, name)
             ])
@@ -59,10 +61,12 @@ export async function POST (req: NextRequest) {
             userId
         }, secret, { expiresIn: "1hr" })
 
+        const jwtExpiry = new Date(Date.now() + 60 * 60 * 1000)
+
         await Promise.all([
             prisma.user.update({
                 where: { id: userId },
-                data: { jwt: token }
+                data: { jwt: token, jwtExpiry }
             }),
             verifyEmail(email, token, name)
         ])

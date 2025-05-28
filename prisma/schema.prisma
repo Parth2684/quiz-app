@@ -23,6 +23,7 @@ model User {
   attemptedQuiz QuizAttempt[]  
   verified    Boolean
   jwt         String? 
+  jwtExpiry   DateTime?
 }
 
 model Admin {
