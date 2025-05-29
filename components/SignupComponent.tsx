@@ -7,6 +7,7 @@ import Button from "./Button"
 import axios from "axios"
 import { useRouter } from "next/navigation"
 import toast from "react-hot-toast"
+import { ResponseSchema } from "@/types/auth/user"
 
 
 export default function SignupComponent () {
@@ -15,14 +16,20 @@ export default function SignupComponent () {
     const [email, setEmail] = useState<string>("")
 
     async function handleOnClick(e:MouseEvent<HTMLButtonElement>) {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/signup/init`, {
-            name,
-            email
-        })
-        if(response.status == 200){
-            toast.success("Verification Email Sent To Your Mail Id")
-        }else{
-            toast.error("Error Sending Verification Email To Your Mail Id")
+        e.preventDefault()
+        try {
+            const response: ResponseSchema = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/signup/init`, {
+                name,
+                email
+            })
+            if(response.status == 200){
+                toast.success("Verification Email Sent To Your Mail Id")
+                return
+            }
+            toast.error(response.data.msg)
+        } catch (error) {
+            console.error(error)
+            toast.error("Error Sending Verification Email")
         }
     }
     return <div className="px-28 rounded-xl bg-white/50 backdrop-blur-md shadow-xl p-6 text-black/70"> 

@@ -12,20 +12,9 @@ export async function PUT (req: NextRequest) {
             }, { status:  411})
         }
 
-        const account = await prisma.user.findFirst({
-            where: {
-                jwt: token
-            }
-        })
-
-        if(!account?.jwtExpiry || new Date() > account.jwtExpiry || account.verified == true || !account.jwt) {
-            return NextResponse.json({
-                valid: false
-            }, { status: 400 })
-        }
 
         await prisma.user.update({
-            where: { id: account.id },
+            where: { jwt: token },
             data: { verified: true },
           });
 

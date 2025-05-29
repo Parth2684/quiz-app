@@ -22,23 +22,19 @@ model User {
   provider    String    
   attemptedQuiz QuizAttempt[]  
   verified    Boolean
-  jwt         String? 
+  jwt         String?   @unique
   jwtExpiry   DateTime?
+  createdQuiz Quiz[]
 }
 
-model Admin {
-  adminId           String         @id
-  name              String
-  password          String
-  createdQuiz    Quiz[]
-}
+
 
 model Quiz {
   id                String         @id @default(uuid())
   name              String
   createdById         String      
   questions         Question[]
-  createdBy         Admin  @relation(fields: [createdById], references: [adminId])
+  createdBy         User  @relation(fields: [createdById], references: [id])
   quizAttempt     QuizAttempt[]
 }
 

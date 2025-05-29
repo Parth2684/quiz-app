@@ -1,5 +1,5 @@
 import prisma from "@/lib/singleton";
-import { InitSignupSchema } from "@/types/signup/init";
+import { InitSignupSchema } from "@/types/auth/user";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { verifyEmail } from "@/lib/email";

@@ -3,24 +3,41 @@ import { MouseEvent, useState } from "react";
 import { InputBar } from "./InputBar";
 import Button from "./Button";
 import toast from "react-hot-toast";
+import axios from "axios";
+import { ResponseSchema } from "@/types/auth/user";
+import { useRouter } from "next/navigation";
 
 
-export default function () {
+export default function ({token}: {token: string}) {
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
-    function handleOnClick(e: MouseEvent<HTMLButtonElement>) {
+    const router = useRouter()
+    async function handleOnClick(e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault()
-        if(password !== confirmPassword) {
+        if (password !== confirmPassword) {
             toast.error("Password Dont Match")
+        }
+        try {
+            const response: ResponseSchema = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/setPassword?token=${token}`)
+            if(response.status !== 200) {
+                toast.error(String(response.data.msg))
+                return
+            }
+            setTimeout(() => {
+                toast.success("Password Set Successfully, Now Please Signin")
+            }, 5000)
+            router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/signin`)
+        } catch (error) {
+            
         }
     }
     return <div className="pb-36 pt-10 flex flex-col">
-        <div className="self-center border border-white p-5 rounded-xl shadow-md">
-        <InputBar title="Password" placeholder="Enter your password" type="password" onChange={(e) => setPassword(e.target.value) } /> 
-        <InputBar title="Confirm Password" placeholder="Enter Confirm Password" type="password" onChange={(e) => setConfirmPassword(e.target.value)} />
-        <div className="flex justify-center mt-5">
-        <Button onClick={(e) => {handleOnClick}} title="Submit"/>
-    </div>
-    </div>
+        <div className="self-center border border-black/50 bg-white/50 p-5 rounded-xl shadow-xl">
+            <InputBar title="Password" placeholder="Enter your password" type="password" onChange={(e) => setPassword(e.target.value)} />
+            <InputBar title="Confirm Password" placeholder="Enter Confirm Password" type="password" onChange={(e) => setConfirmPassword(e.target.value)} />
+            <div className="flex justify-center mt-5">
+                <Button onClick={(e) => { handleOnClick }} title="Submit" />
+            </div>
+        </div>
     </div>
 }

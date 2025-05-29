@@ -24,7 +24,7 @@ export default async function SetPassword({ searchParams }: PageProps) {
   const token = params.token
   
   if (!token) {
-    return <Verified />
+    return <NotVerified />
   }
   
   const isVerified = await verifyEmail(token)
@@ -32,7 +32,7 @@ export default async function SetPassword({ searchParams }: PageProps) {
   return (
     <div className="flex items-center justify-center">
       <div className="w-fit h-fit">
-        {isVerified ? <Verified /> : <NotVerified />}
+        {isVerified ? <Verified token={token} /> : <NotVerified />}
       </div>
     </div>
   )
