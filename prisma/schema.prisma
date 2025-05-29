@@ -28,6 +28,16 @@ model User {
   image       String?
 }
 
+model QuizAnswer {
+  id          String    @id @default(uuid())
+  quizAttemptId String
+  questionId  String
+  optionId    String
+
+  quizAttempt QuizAttempt @relation(fields: [quizAttemptId], references: [id])
+  question    Question     @relation(fields: [questionId], references: [id])
+  option      Option       @relation(fields: [optionId], references: [id])
+}
 
 
 model Quiz {
@@ -45,6 +55,7 @@ model Question {
   quizId            String
   quiz              Quiz  @relation(fields: [quizId], references: [id])
   options           Option[]
+  answers         QuizAnswer[]
 }
 
 model Option {
@@ -53,6 +64,7 @@ model Option {
   isCorrect         Boolean 
   questionId        String
   question          Question  @relation(fields: [questionId], references: [id])
+  answers         QuizAnswer[]
 }
 
 model QuizAttempt {
@@ -60,11 +72,13 @@ model QuizAttempt {
   userId          String      
   quizId          String
   score           Int
-  questionIds    String[]
-  optionIds       String[]
   attemptedAt     DateTime    @default(now())
+
   user            User  @relation(fields: [userId], references: [id])
   quiz            Quiz  @relation(fields: [quizId], references: [id])
+  answers         QuizAnswer[]
+
   @@unique([userId, quizId])
 }
+
 
