@@ -1,11 +1,12 @@
 import prisma from "@/lib/singleton";
-import NextAuth from "next-auth";
+import NextAuth, { AuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcrypt"
 import Google from "next-auth/providers/google";
 
 
-const handler = NextAuth({
+export const authOptions: AuthOptions = {
+    secret: process.env.NEXT_AUTH_SECRET,
     providers: [
         Credentials({
             name: "Credentials",
@@ -56,16 +57,19 @@ const handler = NextAuth({
         async jwt({ token, user }) {
             if (user) {
                 token.id = user.id;
+                token.email = user.email;
+                token.name = user.name;
+                token.image = user.image
             }
             return token
         },
         
-        async session({ session, token, user }) {
-            if(token.id){
+        async session({ session, token }) {
+            if(token && token.id){
                 session.user.id = token.id as string;
-                session.user.email = user.email;
-                session.user.name = user.name as string
-                session.user.image = user.image as string
+                session.user.email = token.email as string;
+                session.user.name = token.name as string
+                session.user.image = token.image as string
             }
             return session;
         }
@@ -74,8 +78,12 @@ const handler = NextAuth({
         strategy: "jwt"
     },
     pages: {
-        signIn: "/signin"
+        signIn: "/signin",
+        signOut: "/signin"
     }
-})
+    
+}
+
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST }

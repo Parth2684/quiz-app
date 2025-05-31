@@ -18,14 +18,14 @@ export default function ({token}: {token: string}) {
             toast.error("Password Dont Match")
         }
         try {
-            const response: ResponseSchema = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/setPassword?token=${token}`)
+            const response: ResponseSchema = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/signup/setPassword?token=${token}`, {
+                password
+            })
             if(response.status !== 200) {
                 toast.error(String(response.data.msg))
                 return
             }
-            setTimeout(() => {
-                toast.success("Password Set Successfully, Now Please Signin")
-            }, 5000)
+            toast.success("Set Password Sucessfull")
             router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/signin`)
         } catch (error) {
             
@@ -36,7 +36,7 @@ export default function ({token}: {token: string}) {
             <InputBar title="Password" placeholder="Enter your password" type="password" onChange={(e) => setPassword(e.target.value)} />
             <InputBar title="Confirm Password" placeholder="Enter Confirm Password" type="password" onChange={(e) => setConfirmPassword(e.target.value)} />
             <div className="flex justify-center mt-5">
-                <Button onClick={(e) => { handleOnClick }} title="Submit" />
+                <Button onClick={(e) => { handleOnClick(e) }} title="Submit" />
             </div>
         </div>
     </div>
