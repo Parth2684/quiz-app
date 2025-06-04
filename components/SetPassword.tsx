@@ -16,6 +16,7 @@ export default function ({token}: {token: string}) {
         e.preventDefault()
         if (password !== confirmPassword) {
             toast.error("Password Dont Match")
+            return;
         }
         try {
             const response: ResponseSchema = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/signup/setPassword?token=${token}`, {
@@ -27,8 +28,9 @@ export default function ({token}: {token: string}) {
             }
             toast.success("Set Password Sucessfull")
             router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/signin`)
-        } catch (error) {
-            
+        } catch (error: any) {
+            console.error("Signin error", error)
+            toast.error(error?.response?.data?.msg || "Error Setting Password")
         }
     }
     return <div className="pb-36 pt-10 flex flex-col">
