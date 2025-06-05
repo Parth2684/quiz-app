@@ -19,6 +19,6 @@ export default function Cursorflow () {
                 x: mousePosition.x - 10,
                 y: mousePosition.y - 10
             }}
-            transition={{ type: "spring", damping: 8, stiffness: 10 }}
+            transition={{ type: "spring", damping: 5, stiffness: 500 }}
         />
 }

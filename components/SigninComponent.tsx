@@ -28,6 +28,6 @@ export default function SigninComponent () {
                 <Button title="Login With Google" onClick={() => signIn("google", { callbackUrl: "/home" })} />
             </div>
         )}
-        <a href="/signin"><p className="text-center mt-6 hover:underline">Create an account? Signup</p></a>
+        <a href="/signup"><p className="text-center mt-6 hover:underline">Create an account? Signup</p></a>
     </div>  
 }

@@ -1,5 +1,6 @@
 "use client"
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 
@@ -23,6 +24,71 @@ export default function TopBar () {
             animate={{ y:0 }}
             transition={{ duration: 0.6 }}
         >
-            
+            <div className="max-w-7xl mx-auto flex justify-between items-center">
+                <motion.div
+                    className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
+                    whileHover={{ scale: 1.05 }}
+                >
+                    Quizzo
+                </motion.div>
+
+                
+                <div className="flex items-center space-x-4">
+                    <motion.a
+                        className="hidden sm:block bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        href="/signup"
+                    >
+                        Sign Up
+                    </motion.a>
+                    <motion.a
+                        className="hidden sm:block px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        href="/signin"
+                    >
+                        Sign In
+                    </motion.a>
+                    <motion.button
+                        className="lg:hidden p-2"
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        { isMenuOpen ? <X size={24} /> : <Menu size={24} /> }
+                    </motion.button>
+                </div>
+            </div>
+
+            <AnimatePresence>
+                {isMenuOpen && (
+                <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="lg:hidden bg-black/40 backdrop-blur-lg border-b border-white/10 mt-4 rounded-2xl mx-4"
+                >
+                    <div className="px-6 py-4 space-y-4">
+                   
+                        <motion.a
+                        href='/signin'
+                        className="block py-2 hover:text-purple-300 transition-colors"
+                        onClick={() => setIsMenuOpen(false)}
+                        whileHover={{ x: 10 }}
+                        >
+                            Sign In
+                        </motion.a>
+                        <motion.button
+                            className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-4 py-3 rounded-full text-sm font-semibold transition-all duration-300 mt-4"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                        >
+                            Sign Up 
+                        </motion.button>
+                    </div>
+                </motion.div>
+                )}
+            </AnimatePresence>
         </motion.header>
+
 }
