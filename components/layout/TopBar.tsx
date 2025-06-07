@@ -1,12 +1,13 @@
 "use client"
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 
 
 
-export default function TopBar () {
+export default function TopBar ({isSignnedIn}: {isSignnedIn: boolean}) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
 
@@ -34,8 +35,16 @@ export default function TopBar () {
 
                 
                 <div className="flex items-center space-x-4">
+                    {isSignnedIn ? <motion.a
+                        className="hidden sm:block bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={(e) => signOut({callbackUrl: "/"})}
+                    >
+                        Logout
+                    </motion.a> : <>
                     <motion.a
-                        className="hidden sm:block bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300"
+                        className="hidden sm:block bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         href="/signup"
@@ -43,13 +52,15 @@ export default function TopBar () {
                         Sign Up
                     </motion.a>
                     <motion.a
-                        className="hidden sm:block px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300"
+                        className="hidden sm:block px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         href="/signin"
                     >
                         Sign In
                     </motion.a>
+                    </>}
+                    
                     <motion.button
                         className="lg:hidden p-2"
                         onClick={() => setIsMenuOpen(!isMenuOpen)}

@@ -1,63 +1,84 @@
 "use client"
+import { FormEvent, useState } from "react";
+import { Card } from "./Card";
+import { InputBar } from "./InputBar";
+import { Button } from "./Button";
+import { GoogleButton } from "./GoogleButton";
+import { signIn } from "next-auth/react";
+import { Divider } from "./Divider";
+import Link from "next/link";
+import axios from "axios";
+import toast from "react-hot-toast";
 
-import { MouseEvent, useEffect, useState } from "react"
-import { InputBar } from "./InputBar"
-import Header from "./Header"
-import Button from "./Button"
-import axios from "axios"
-import { useRouter } from "next/navigation"
-import toast from "react-hot-toast"
-import { ResponseSchema } from "@/types/auth/user"
-import { getProviders, signIn } from "next-auth/react"
+export const SignupComponent = () => {
+    const [formData, setFormData] = useState({ email: '', name: '' });
+    const [errors, setErrors] = useState<any>();
+    const [isLoading, setIsLoading] = useState(false);
+    const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-
-export default function SignupComponent () {
-    const router = useRouter()
-    const [name, setName] = useState<string>("")
-    const [email, setEmail] = useState<string>("")
-    const [providers, setProviders] = useState<any>(null)
-
-    useEffect(() => {
-        (async () => {
-            const res = await getProviders()
-            setProviders(res)
-        })()
-    },[])
-
-    async function handleOnClick(e:MouseEvent<HTMLButtonElement>) {
-        e.preventDefault()
-        try {
-            const response: ResponseSchema = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/signup/init`, {
-                name,
-                email
-            })
-            if(response.status == 200){
-                toast.success("Verification Email Sent To Your Mail Id")
-                return
-            }
-            toast.error(response.data.msg)
-        } catch (error) {
-            console.error(error)
-            toast.error("Error Sending Verification Email")
+    async function handleSubmit (e: FormEvent<HTMLFormElement>) {
+      e.preventDefault()
+      setIsLoading(true)
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/signup/init`, {
+            email: formData.email,
+            name: formData.name
+        })
+        if (response.status == 200){
+          toast.success("Email sent to your mail-id")
+        }else{
+          toast.error(response.data.msg)
         }
+        setIsLoading(false)
     }
-    return <div className="px-28 rounded-xl bg-white/50 backdrop-blur-md shadow-xl p-6 text-black/70"> 
-        <div className="pt-10">
-        <Header title="Sign Up" />
-        </div>
-        <div className="flex flex-col justify-center pt-10 pb-14">
-            <InputBar title="Name" placeholder="Enter Your Name" type="text" onChange={(e) => setName(e.target.value)} titleClassname="text-xl" />
-            <InputBar title="Email" placeholder="Enter Your Email" type="email" onChange={(e) => setEmail(e.target.value)} titleClassname="text-xl" />
-            <div className="flex justify-center mt-5">
-                <Button title="Sign Up" onClick={handleOnClick} bgColor="blue" />
-            </div>
-            <p className="text-center">----------OR----------</p>
-            {providers?.google && (
-                <div className="mt-2 w-full max-w-sm flex justify-center">
-                    <Button title="Login With Google" onClick={() => signIn("google", { callbackUrl: "/home" })} />
-                </div>
-            )}
-        </div>
-        <a href="/signin"><p className="text-center">Already have an account? Login</p></a>
-    </div>
-}
+  
+    return (
+        <Card>
+          <form onSubmit={(e) => handleSubmit(e)} className="space-y-6">
+
+          <InputBar
+              label="Name"
+              type="text"
+              placeholder="Enter your name"
+              value={formData.name}
+              onChange={(e) => setFormData({...formData, name: e.target.value})}
+            />
+
+
+            <InputBar
+              label="Email"
+              type="email"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              icon={<span>📧</span>}
+            />
+
+            
+            <Button 
+              type="submit" 
+              className="w-full" 
+              isLoading={isLoading}
+            >
+              Create Account
+            </Button>
+          </form>
+          
+          <Divider />
+          
+          <GoogleButton
+            onClick={() => signIn("google", { callbackUrl: "/home" })}
+            isLoading={isGoogleLoading}
+            text="Sign up with Google"
+          />
+          
+          <div className="text-center mt-6">
+            <p className="text-gray-300">
+              Already have an account?{' '}
+              <Link href="/signin" className="text-purple-400 hover:text-purple-300 font-semibold">
+                Sign in
+              </Link>
+            </p>
+          </div>
+        </Card>
+    );
+  };

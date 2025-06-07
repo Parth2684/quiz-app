@@ -1,5 +1,5 @@
+import { VerificationPage } from "@/components/VerificationPage"
 import { NotVerified } from "@/components/NotVerified"
-import { Verified } from "@/components/Verified"
 import axios from "axios"
 
 interface PageProps {
@@ -22,18 +22,16 @@ async function verifyEmail(token: string) {
 export default async function SetPassword({ searchParams }: PageProps) {
   const params = await searchParams
   const token = params.token
-  
-  if (!token) {
+  if(!token) {
     return <NotVerified />
   }
+  const isVerified =  await verifyEmail(token as string)
   
-  const isVerified = await verifyEmail(token)
   
   return (
-    <div className="flex items-center justify-center">
-      <div className="w-fit h-fit">
-        {isVerified ? <Verified token={token} /> : <NotVerified />}
+      <div>
+        {isVerified ? <VerificationPage token={token as string} /> : <NotVerified />}
       </div>
-    </div>
+  
   )
 }

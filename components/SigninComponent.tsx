@@ -1,33 +1,88 @@
 "use client"
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
+import { Card } from "./Card";
 import { InputBar } from "./InputBar";
-import Button from "./Button";
-import { getProviders, signIn } from "next-auth/react";
+import Link from "next/link";
+import { Button } from "./Button";
+import { Divider } from "./Divider";
+import { GoogleButton } from "./GoogleButton";
+import { signIn } from "next-auth/react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 
-export default function SigninComponent () {
-    const [providers, setProviders] = useState<any>(null)
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    useEffect(() => {
-        (async() => {
-            const res = await getProviders();
-            console.log("res: ", res)
-            setProviders(res)
-        })()
-    }, [])
-    return <div>
-        <InputBar type="email" title="Email" placeholder="Enter Your Email" onChange={(e) => setEmail(e.target.value)}/>
-        <InputBar type="password" title="Password" placeholder="Enter Your Password" onChange={(e) => setPassword(e.target.value)}/>
-        <div className="flex justify-center mt-5 mb-2">
-            <Button title="Login" onClick={async(e) => await signIn("credentials", { email, password, callbackUrl:"/home" })} />
-        </div>
-        <p className="text-center">----------OR----------</p>
-        {providers?.google && (
-            <div className="mt-2 w-full max-w-sm flex justify-center">
-                <Button title="Login With Google" onClick={() => signIn("google", { callbackUrl: "/home" })} />
+export const SigninComponent = () => {
+    // Your state and handlers here
+    const [formData, setFormData] = useState({ email: '', password: '' });
+    const [isLoading, setIsLoading] = useState(false);
+    const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+    const router = useRouter()
+  
+    return (
+        <Card>
+          <form 
+            onSubmit={async (e) => {
+                e.preventDefault(); // don't forget this to stop page reload
+                setIsLoading(true);
+                const res = await signIn("credentials", {
+                email: formData.email,
+                password: formData.password,
+                callbackUrl: "/home"
+                });
+                setIsLoading(false);
+            }}
+            className="space-y-6"
+            >
+            <InputBar
+              label="Email"
+              type="email"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              icon={<span>📧</span>}
+            />
+            
+            <InputBar
+              label="Password"
+              type="password"
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={(e) => setFormData({...formData, password: e.target.value})}
+              icon={<span>🔒</span>}
+            />
+            
+            <div className="flex items-center justify-between">
+              <Link  href="/forgot-password" className="text-sm text-purple-400 hover:text-purple-300">
+                Forgot password?
+              </Link>
             </div>
-        )}
-        <a href="/signup"><p className="text-center mt-6 hover:underline">Create an account? Signup</p></a>
-    </div>  
-}
+            
+            <Button 
+              type="submit" 
+              className="w-full" 
+              isLoading={isLoading}
+            >
+              Sign In
+            </Button>
+          </form>
+          
+          <Divider />
+          
+          <GoogleButton
+            onClick={() => signIn("google", {callbackUrl: "/home"})}
+            isLoading={isGoogleLoading}
+            text="Sign in with Google"
+          />
+          
+          <div className="text-center mt-6">
+            <p className="text-gray-300">
+              Don't have an account?{' '}
+              <Link href="/signup" className="text-purple-400 hover:text-purple-300 font-semibold">
+                Sign up
+              </Link>
+            </p>
+          </div>
+        </Card>
+    );
+  };

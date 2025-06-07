@@ -1,7 +1,7 @@
 "use client"
 import { MouseEvent, useState } from "react";
 import { InputBar } from "./InputBar";
-import Button from "./Button";
+import { Button } from "./Button";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { ResponseSchema } from "@/types/auth/user";
@@ -38,7 +38,7 @@ export default function ({token}: {token: string}) {
             <InputBar title="Password" placeholder="Enter your password" type="password" onChange={(e) => setPassword(e.target.value)} />
             <InputBar title="Confirm Password" placeholder="Enter Confirm Password" type="password" onChange={(e) => setConfirmPassword(e.target.value)} />
             <div className="flex justify-center mt-5">
-                <Button onClick={(e) => { handleOnClick(e) }} title="Submit" />
+                <Button onClick={(e) => { handleOnClick(e) }} children="Submit" />
             </div>
         </div>
     </div>
