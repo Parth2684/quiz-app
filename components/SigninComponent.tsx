@@ -8,8 +8,8 @@ import { Button } from "./Button";
 import { Divider } from "./Divider";
 import { GoogleButton } from "./GoogleButton";
 import { signIn } from "next-auth/react";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { NotVerified } from "./NotVerified";
 
 
 export const SigninComponent = () => {
@@ -30,6 +30,10 @@ export const SigninComponent = () => {
                 password: formData.password,
                 callbackUrl: "/home"
                 });
+                if(res?.error) {
+                  return <NotVerified />
+                }
+                
                 setIsLoading(false);
             }}
             className="space-y-6"
@@ -70,7 +74,11 @@ export const SigninComponent = () => {
           <Divider />
           
           <GoogleButton
-            onClick={() => signIn("google", {callbackUrl: "/home"})}
+            onClick={() => {
+              setIsGoogleLoading(true)
+              signIn("google", {callbackUrl: "/home"})
+              setIsGoogleLoading(false)
+            }}
             isLoading={isGoogleLoading}
             text="Sign in with Google"
           />

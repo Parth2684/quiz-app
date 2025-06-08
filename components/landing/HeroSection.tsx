@@ -1,9 +1,10 @@
 "use client"
 import { motion } from "framer-motion"
 import { ArrowRight, Play } from "lucide-react"
-
+import { useRouter } from "next/navigation"
 
 export function HeroFunction () {
+    const router = useRouter()
     const stats = [
         { number: "50k+", label: "Quizzes Created" },
         { number: "2M+", label: "Quiz Attempts" },
@@ -56,23 +57,17 @@ export function HeroFunction () {
                 className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold flex items-center justify-center gap-3 shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 group"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => {router.push("/signup")}}
             >
                 <Play className="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse" />
                 Start Creating Free
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
             </motion.button>
 
-            <motion.button
-                className="w-full sm:w-auto border border-white/30 hover:border-white/60 px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold backdrop-blur-sm hover:bg-white/10 transition-all duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-            >
-                Watch Demo
-            </motion.button>
             </motion.div>
 
             {/* Stats */}
-            <motion.div
+            {/* <motion.div
             className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 max-w-5xl mx-auto px-4"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -95,7 +90,7 @@ export function HeroFunction () {
                 <div className="text-gray-400 mt-2 text-sm sm:text-base">{stat.label}</div>
                 </motion.div>
             ))}
-            </motion.div>
+            </motion.div> */}
         </motion.div>
     </section>
 }

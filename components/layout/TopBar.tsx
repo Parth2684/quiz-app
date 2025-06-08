@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 
 
 
-
 export default function TopBar ({isSignnedIn}: {isSignnedIn: boolean}) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
@@ -27,10 +26,11 @@ export default function TopBar ({isSignnedIn}: {isSignnedIn: boolean}) {
         >
             <div className="max-w-7xl mx-auto flex justify-between items-center">
                 <motion.div
-                    className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
+                    className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent cursor-pointer"
                     whileHover={{ scale: 1.05 }}
-                >
+                ><a href={isSignnedIn ? "/home" : "/"}>
                     Quizzo
+                    </a>
                 </motion.div>
 
                 
@@ -59,15 +59,16 @@ export default function TopBar ({isSignnedIn}: {isSignnedIn: boolean}) {
                     >
                         Sign In
                     </motion.a>
-                    </>}
-                    
                     <motion.button
-                        className="lg:hidden p-2"
+                        className="sm:hidden p-2"
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
                         whileTap={{ scale: 0.95 }}
                     >
                         { isMenuOpen ? <X size={24} /> : <Menu size={24} /> }
                     </motion.button>
+                    </>}
+                    
+                    
                 </div>
             </div>
 
@@ -83,7 +84,7 @@ export default function TopBar ({isSignnedIn}: {isSignnedIn: boolean}) {
                    
                         <motion.a
                         href='/signin'
-                        className="block py-2 hover:text-purple-300 transition-colors"
+                        className="block py-2 hover:text-purple-300 transition-colors text-center"
                         onClick={() => setIsMenuOpen(false)}
                         whileHover={{ x: 10 }}
                         >

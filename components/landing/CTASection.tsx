@@ -1,6 +1,7 @@
 "use client"
 import { motion } from "framer-motion";
 import { ArrowRight, Zap } from "lucide-react";
+import Link from "next/link";
 
 
 
@@ -26,7 +27,9 @@ export const CTASection = () => {
             whileTap={{ scale: 0.95 }}
           >
             <Zap className="w-5 h-5 sm:w-6 sm:h-6 group-hover:animate-pulse" />
+            <Link href={"/signup"}>
             Get Started Now
+            </Link>
             <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-2 transition-transform" />
           </motion.button>
         </motion.div>

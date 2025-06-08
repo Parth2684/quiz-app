@@ -1,20 +1,26 @@
-"use client"
-import { usePathname } from "next/navigation";
+import { headers } from "next/headers";
 
 interface AuthLayoutProps {
     children: React.ReactNode;
   }
   
-  export default function AuthLayout ({ children }: AuthLayoutProps) {
-    const pathName = usePathname();
+  export default async function AuthLayout ({ children }: AuthLayoutProps) {
     let title;
     let subtitle;
-
-    if(pathName.includes("signup")){
-        title = "Join Us"
-        subtitle = "Create your account and start your journey";
+    const headerList = await headers()
+    const pathname = headerList.get('x-pathname')
+    if(pathname == "/signup") {
+      title = "Join Us"
+      subtitle="Create your account and start your journey"
     }
-    
+    if(pathname == "/signin"){
+      title="Welcome Back" 
+      subtitle="Sign in to your account"
+    }
+    if(pathname == "/set-password") {
+      title="Set Your Password" 
+      subtitle="Complete your account setup"
+    }
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center px-4">
         {/* Animated background elements */}
