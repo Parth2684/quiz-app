@@ -11,9 +11,11 @@ export const POST = async(req: NextRequest) => {
         if(!session){
             return NextResponse.json({msg: "Unauthorized"}, {status: 401})
         }
+        console.log("session id", session.user.id)
         const body = await req.json()
         const response = quizSchema.safeParse(body)
         if(!response.success){
+            console.error(response.error)
             return NextResponse.json({msg: "Please Ensure you are providing correct details"}, {status: 411})
         }
         const { name, description, questionAnswer } = response.data;

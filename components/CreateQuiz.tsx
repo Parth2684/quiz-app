@@ -1,10 +1,13 @@
 "use client"
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 import { PreviewMode } from "./PreviewQuiz";
 import { Button } from "./Button";
 import { Eye, Plus, Save } from "lucide-react";
 import { QuizHeader } from "./QuizHeader";
 import { Question } from "./Question";
+import { axiosInstance } from "@/lib/axiosInstance";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 
 
@@ -21,6 +24,7 @@ export const CreateQuiz = () => {
       ]
     });
   
+    const router = useRouter()
     const [previewMode, setPreviewMode] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
   
@@ -123,31 +127,23 @@ export const CreateQuiz = () => {
     const saveQuiz = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('/api/quiz', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(quiz),
-        });
-  
-        const data = await response.json();
-  
-        if (response.ok) {
-          alert('Quiz saved successfully!');
-          console.log('Quiz saved:', data);
-        } else {
-          alert(data.msg || 'Failed to save quiz');
-        }
+        await axiosInstance.post("/api/v1/quiz/create-quiz", {
+          name: quiz.name,
+          description: quiz.description,
+          questionAnswer: quiz.questionAnswer
+        })  
+        toast.success("Quiz Created Successfully")
       } catch (error) {
         console.error('Error saving quiz:', error);
-        alert('Failed to save quiz. Please try again.');
+        toast.error('Failed to save quiz. Please try again.');
       } finally {
         setIsLoading(false);
+        
       }
     };
   
-    const togglePreview = () => {
+    const togglePreview = (e: MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault()
       setPreviewMode(!previewMode);
     };
   
@@ -193,8 +189,8 @@ export const CreateQuiz = () => {
             />
           ))}
   
-          <div className="flex justify-center mb-8">
-            <Button variant="primary" onClick={addQuestion} size="lg">
+          <div className="flex justify-center">
+            <Button variant="primary" onClick={addQuestion} size="lg" className="mb-10">
               <Plus size={20} />
               Add Question
             </Button>

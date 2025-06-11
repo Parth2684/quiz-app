@@ -10,10 +10,7 @@ export type QuestionAnswerSchema = z.infer<typeof questionAnswerSchema>
 
 export const quizSchema = z.object({
     name: z.string().min(1, "Name of the quiz cannot be empty"),
-    description: z.union([
-        z.string().min(15, "Description must be at least 15 characters"),
-        z.undefined()
-      ]),
+    description: z.string().optional(),
     questionAnswer: z.array(questionAnswerSchema)
 }) 
 

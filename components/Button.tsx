@@ -18,14 +18,14 @@ export const Button = ({ variant = 'primary', size = 'md', isLoading = false, ch
   };
   
   const sizes = {
-    sm: 'px-4 py-2 text-sm',
-    md: 'px-6 py-3 text-base',
-    lg: 'px-8 py-4 text-lg'
-  };
+  sm: 'px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm',
+  md: 'px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-base',
+  lg: 'px-5 py-3 text-base sm:px-8 sm:py-4 sm:text-lg'
+};
   
   return (
     <button
-      className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${className} ${
+      className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${className} cursor-pointer ${
         (disabled || isLoading) ? 'opacity-50 cursor-not-allowed transform-none' : ''
       }`}
       disabled={disabled || isLoading}

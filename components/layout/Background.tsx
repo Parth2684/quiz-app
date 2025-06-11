@@ -2,7 +2,7 @@
 import { motion } from "framer-motion"
 
 export default function Background () {
-    return <div className="absolute inset-0 overflow-hidden">
+    return <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <motion.div 
             className="absolute w-72 h-72 sm:w-80 sm:h-80 bg-purple-500/20 rounded-full blur-3xl"
             animate={{

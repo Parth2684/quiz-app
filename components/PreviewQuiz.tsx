@@ -3,11 +3,12 @@ import { Check, X } from "lucide-react";
 import { Button } from "./Button";
 import { Card } from "./Card";
 import { QuizSchema } from "@/types/quiz";
+import { MouseEvent } from "react";
 
 
 interface PreviewModeProps {
     quiz: QuizSchema;
-    onExit: () => void;
+    onExit: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const PreviewMode = ({ quiz, onExit }: PreviewModeProps) => {

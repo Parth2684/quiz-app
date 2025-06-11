@@ -50,6 +50,10 @@ export const authOptions: AuthOptions = {
                         }
                     })
                 }
+                const fullUser = await prisma.user.findUnique({where: { email: user.email }})
+                if(fullUser){
+                    user.id = fullUser.id
+                }
             }
             return true
         },

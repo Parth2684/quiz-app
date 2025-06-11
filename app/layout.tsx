@@ -35,7 +35,9 @@ export default async function RootLayout({
           <Cursorflow />
           <TopBar isSignnedIn={Boolean(isSignedIn)} />
           <Toaster position="top-center" reverseOrder={false} />
-          {children}
+          <div className="mt-14 mb-14">
+            {children}
+          </div>
         </div>
       </body>
     </html>
