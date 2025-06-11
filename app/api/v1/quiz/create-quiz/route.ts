@@ -16,7 +16,7 @@ export const POST = async(req: NextRequest) => {
         if(!response.success){
             return NextResponse.json({msg: "Please Ensure you are providing correct details"}, {status: 411})
         }
-        const { name, description } = response.data;
+        const { name, description, questionAnswer } = response.data;
 
         await prisma.$transaction(async (tx) => {
             
@@ -26,12 +26,13 @@ export const POST = async(req: NextRequest) => {
                 data: {
                     id: quizId,
                     name,
+                    description,
                     createdById: session.user.id
                 }
             })
 
             const questionIds: string[] = []
-            const questionData = description.map((q) => {
+            const questionData = questionAnswer.map((q) => {
                 const questionId = uuidv4();
                 questionIds.push(questionId);
                 return {
@@ -43,7 +44,7 @@ export const POST = async(req: NextRequest) => {
 
             await tx.question.createMany({data: questionData})
 
-            const allOptions: Prisma.OptionCreateManyInput[] = description.flatMap((q, index) => {
+            const allOptions: Prisma.OptionCreateManyInput[] = questionAnswer.flatMap((q, index) => {
                 const questionId = questionIds[index];
                 return q.options.map((opt) => ({
                     id: uuidv4(),

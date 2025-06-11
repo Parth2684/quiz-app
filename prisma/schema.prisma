@@ -33,7 +33,6 @@ model QuizAnswer {
   quizAttemptId String
   questionId  String
   optionId    String
-
   quizAttempt QuizAttempt @relation(fields: [quizAttemptId], references: [id])
   question    Question     @relation(fields: [questionId], references: [id])
   option      Option       @relation(fields: [optionId], references: [id])
@@ -43,6 +42,7 @@ model QuizAnswer {
 model Quiz {
   id                String         @id @default(uuid())
   name              String
+  description       String?
   createdById         String      
   questions         Question[]
   createdBy         User  @relation(fields: [createdById], references: [id])

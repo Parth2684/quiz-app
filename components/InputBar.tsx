@@ -7,7 +7,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 export const InputBar = ({ label, error, icon, className = '', ...props }: InputProps) => {
   return (
-    <div className="space-y-2">
+    <div className="">
       {label && (
         <label className="block text-sm font-medium text-gray-300">
           {label}

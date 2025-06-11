@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import { headers } from "next/headers";
 
 interface AuthLayoutProps {
@@ -31,14 +32,7 @@ interface AuthLayoutProps {
         </div>
         
         <div className="relative z-10 w-full max-w-md">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold bg-linear-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">
-              {title}
-            </h1>
-            {subtitle && (
-              <p className="text-gray-300 text-lg">{subtitle}</p>
-            )}
-          </div>
+          <Header title={title as string} subtitle={subtitle} />
           {children}
         </div>
       </div>
