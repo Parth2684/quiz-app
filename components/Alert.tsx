@@ -20,7 +20,7 @@ interface AlertProps {
     };
   
     return (
-      <div className={`p-4 rounded-xl border backdrop-blur-sm ${types[type]} ${className}`}>
+      <div className={`p-4 rounded-xl border backdrop-blur-xs ${types[type]} ${className}`}>
         <div className="flex items-center gap-2">
           <span>{icons[type]}</span>
           <span>{message}</span>

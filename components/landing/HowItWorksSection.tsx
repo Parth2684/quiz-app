@@ -13,7 +13,7 @@ export const HowItWorksSection = () => {
       <section className="relative z-10 px-4 sm:px-6 py-16 sm:py-20">
         <div className="max-w-7xl mx-auto">
           <motion.h2
-            className="text-3xl py-1 sm:py-2 sm:text-4xl lg:text-5xl font-bold text-center mb-12 sm:mb-16 bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent"
+            className="text-3xl py-1 sm:py-2 sm:text-4xl lg:text-5xl font-bold text-center mb-12 sm:mb-16 bg-linear-to-r from-green-400 to-blue-400 bg-clip-text text-transparent"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -44,7 +44,7 @@ export const HowItWorksSection = () => {
                 
                 {i < 2 && (
                   <motion.div
-                    className="hidden lg:block absolute top-12 -right-6 w-12 h-0.5 bg-gradient-to-r from-purple-400 to-transparent"
+                    className="hidden lg:block absolute top-12 -right-6 w-12 h-0.5 bg-linear-to-r from-purple-400 to-transparent"
                     initial={{ width: 0 }}
                     whileInView={{ width: 48 }}
                     viewport={{ once: true }}

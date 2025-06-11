@@ -14,7 +14,7 @@ export default function Cursorflow () {
     },[])
 
     return <motion.div 
-            className="fixed w-2 h-2 sm:w-4 sm:h-4 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full pointer-events-none z-50 mix-blend-difference hidden sm:block"
+            className="fixed w-2 h-2 sm:w-4 sm:h-4 bg-linear-to-r from-purple-400 to-pink-400 rounded-full pointer-events-none z-50 mix-blend-difference hidden sm:block"
             animate={{
                 x: mousePosition.x - 10,
                 y: mousePosition.y - 10

@@ -33,7 +33,7 @@ export const FeaturesSection = () => {
       <section className="relative z-10 px-4 sm:px-6 py-16 sm:py-20">
         <div className="max-w-7xl mx-auto">
           <motion.h2
-            className="text-3xl py-1 sm:py-2 sm:text-4xl lg:text-5xl font-bold text-center mb-12 sm:mb-16 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
+            className="text-3xl py-1 sm:py-2 sm:text-4xl lg:text-5xl font-bold text-center mb-12 sm:mb-16 bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}

@@ -26,7 +26,7 @@ export default function TopBar ({isSignnedIn}: {isSignnedIn: boolean}) {
         >
             <div className="max-w-7xl mx-auto flex justify-between items-center">
                 <motion.div
-                    className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent cursor-pointer"
+                    className="text-2xl sm:text-3xl font-bold bg-linear-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent cursor-pointer"
                     whileHover={{ scale: 1.05 }}
                 ><a href={isSignnedIn ? "/home" : "/"}>
                     Quizzo
@@ -36,7 +36,7 @@ export default function TopBar ({isSignnedIn}: {isSignnedIn: boolean}) {
                 
                 <div className="flex items-center space-x-4">
                     {isSignnedIn ? <motion.a
-                        className="hidden sm:block bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer"
+                        className="hidden sm:block bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={(e) => signOut({callbackUrl: "/"})}
@@ -44,7 +44,7 @@ export default function TopBar ({isSignnedIn}: {isSignnedIn: boolean}) {
                         Logout
                     </motion.a> : <>
                     <motion.a
-                        className="hidden sm:block bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer"
+                        className="hidden sm:block bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         href="/signup"
@@ -91,7 +91,7 @@ export default function TopBar ({isSignnedIn}: {isSignnedIn: boolean}) {
                             Sign In
                         </motion.a>
                         <motion.button
-                            className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-4 py-3 rounded-full text-sm font-semibold transition-all duration-300 mt-4"
+                            className="w-full bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-4 py-3 rounded-full text-sm font-semibold transition-all duration-300 mt-4"
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                         >

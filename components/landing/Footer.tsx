@@ -7,7 +7,7 @@ export const Footer = () => {
       <footer className="relative z-10 px-4 sm:px-6 py-8 sm:py-12 border-t border-white/10">
         <div className="max-w-7xl mx-auto text-center">
           <motion.div
-            className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-4"
+            className="text-xl sm:text-2xl font-bold bg-linear-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-4"
             whileHover={{ scale: 1.05 }}
           >
             Quizzo

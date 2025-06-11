@@ -20,7 +20,7 @@ export const InputBar = ({ label, error, icon, className = '', ...props }: Input
           </div>
         )}
         <input
-          className={`w-full px-4 py-3 ${icon ? 'pl-10' : ''} bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 ${className} ${
+          className={`w-full px-4 py-3 ${icon ? 'pl-10' : ''} bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 backdrop-blur-xs focus:outline-hidden focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 ${className} ${
             error ? 'border-red-500 focus:ring-red-500' : ''
           }`}
           {...props}

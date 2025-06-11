@@ -30,7 +30,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white overflow-hidden relative">
+        <div className="min-h-screen bg-linear-to-br from-purple-900 via-blue-900 to-indigo-900 text-white overflow-hidden relative">
           <Background /> 
           <Cursorflow />
           <TopBar isSignnedIn={Boolean(isSignedIn)} />

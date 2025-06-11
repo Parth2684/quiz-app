@@ -25,13 +25,13 @@ export function HeroFunction () {
                 transition={{ duration: 1, delay: 0.2 }}
                 >
                 Create{" "}
-                <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent">
                     Epic
                 </span>
                 <br />
                 Quizzes in{" "}
                 <motion.span
-                    className="inline-block bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent"
+                    className="inline-block bg-linear-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent"
                     animate={{ rotate: [0, 5, -5, 0] }}
                     transition={{ duration: 2, repeat: Infinity }}
                 >
@@ -54,7 +54,7 @@ export function HeroFunction () {
             transition={{ duration: 0.8, delay: 0.6 }}
             >
             <motion.button
-                className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold flex items-center justify-center gap-3 shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 group"
+                className="w-full sm:w-auto bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold flex items-center justify-center gap-3 shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 group"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => {router.push("/signup")}}
@@ -82,7 +82,7 @@ export function HeroFunction () {
                 transition={{ duration: 0.5, delay: 0.9 + i * 0.1 }}
                 >
                 <motion.div
-                    className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
+                    className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-linear-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
                     whileHover={{ scale: 1.1 }}
                 >
                     {stat.number}
