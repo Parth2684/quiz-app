@@ -133,6 +133,7 @@ export const CreateQuiz = () => {
           questionAnswer: quiz.questionAnswer
         })  
         toast.success("Quiz Created Successfully")
+        router.push("/home")
       } catch (error) {
         console.error('Error saving quiz:', error);
         toast.error('Failed to save quiz. Please try again.');

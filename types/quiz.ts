@@ -14,4 +14,20 @@ export const quizSchema = z.object({
     questionAnswer: z.array(questionAnswerSchema)
 }) 
 
-export type QuizSchema = z.infer<typeof quizSchema>
+export type QuizSchema = z.infer<typeof quizSchema> & {id?: string, createdBy?: string}
+
+
+export interface QuizWithoutQuestionAnswer {
+    name: string;
+    description?: string | null;
+    id?: string;
+    createdBy?: string;
+
+  quizAttempt: {
+    id: string
+    userId: string
+    quizId: string
+    score: number
+    attemptedAt: Date
+  }[]
+}

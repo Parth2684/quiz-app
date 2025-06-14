@@ -33,7 +33,8 @@ model QuizAnswer {
   quizAttemptId String
   questionId  String
   optionId    String
-  quizAttempt QuizAttempt @relation(fields: [quizAttemptId], references: [id])
+  quizId      String
+  quizAttempt QuizAttempt @relation(fields: [quizAttemptId], references: [id], onDelete: Cascade)
   question    Question     @relation(fields: [questionId], references: [id])
   option      Option       @relation(fields: [optionId], references: [id])
 }
@@ -43,9 +44,10 @@ model Quiz {
   id                String         @id @default(uuid())
   name              String
   description       String?
-  createdById         String      
-  questions         Question[]
-  createdBy         User  @relation(fields: [createdById], references: [id])
+  createdById         String    
+  createdAt         DateTime  @default(now())  
+  questions         Question[] 
+  createdBy         User  @relation(fields: [createdById], references: [id], onDelete: Cascade)
   quizAttempt     QuizAttempt[]
 }
 
@@ -53,7 +55,7 @@ model Question {
   id                String      @id @default(uuid())
   question          String      
   quizId            String
-  quiz              Quiz  @relation(fields: [quizId], references: [id])
+  quiz              Quiz  @relation(fields: [quizId], references: [id], onDelete: Cascade)
   options           Option[]
   answers         QuizAnswer[]
 }
@@ -63,7 +65,7 @@ model Option {
   option           String
   isCorrect         Boolean 
   questionId        String
-  question          Question  @relation(fields: [questionId], references: [id])
+  question          Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
   answers         QuizAnswer[]
 }
 
@@ -73,9 +75,8 @@ model QuizAttempt {
   quizId          String
   score           Int
   attemptedAt     DateTime    @default(now())
-
-  user            User  @relation(fields: [userId], references: [id])
-  quiz            Quiz  @relation(fields: [quizId], references: [id])
+  user            User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quiz            Quiz  @relation(fields: [quizId], references: [id], onDelete: Cascade)
   answers         QuizAnswer[]
 
   @@unique([userId, quizId])
