@@ -1,7 +1,7 @@
 "use client"
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
   children: React.ReactNode;
@@ -14,7 +14,8 @@ export const Button = ({ variant = 'primary', size = 'md', isLoading = false, ch
     primary: 'bg-linear-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:shadow-xl hover:from-purple-700 hover:to-pink-700',
     secondary: 'bg-linear-to-r from-blue-600 to-cyan-600 text-white shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-cyan-700',
     outline: 'border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white backdrop-blur-xs',
-    ghost: 'text-gray-300 hover:text-white hover:bg-white/10 backdrop-blur-xs'
+    ghost: 'text-gray-300 hover:text-white hover:bg-white/10 backdrop-blur-xs',
+    danger: 'bg-gradient-to-r from-red-600 to-red-700 text-white shadow-lg hover:shadow-xl hover:from-red-700 hover:to-red-800'
   };
   
   const sizes = {

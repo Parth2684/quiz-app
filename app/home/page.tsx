@@ -9,7 +9,7 @@ export default async function () {
     async function getQuizes () {
         const quizes = await prisma.quiz.findMany({
             include: {
-                quizAttempt: true
+                quizAttempt: true,
             },
             orderBy: {
                 createdAt: 'desc'

@@ -21,7 +21,7 @@ export interface QuizWithoutQuestionAnswer {
     name: string;
     description?: string | null;
     id?: string;
-    createdBy?: string;
+    createdById?: string;
 
   quizAttempt: {
     id: string

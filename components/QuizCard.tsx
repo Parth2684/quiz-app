@@ -10,9 +10,10 @@ interface QuizCardProps {
     onPlay: (quizId: string) => void;
     onShare: (quizId: string) => void;
     isOwned?: boolean
+    onDelete?: () => void;
 }
 
-export const QuizCard = ({ quiz, onPlay, onShare, isOwned = false }: QuizCardProps) => {
+export const QuizCard = ({ quiz, onPlay, onShare, isOwned = false, onDelete }: QuizCardProps) => {
   const router = useRouter()
   function editQuiz(quizId: string) {
     router.push(`/quiz/edit/${quizId}`)
@@ -37,7 +38,7 @@ export const QuizCard = ({ quiz, onPlay, onShare, isOwned = false }: QuizCardPro
             <Button size="sm" variant="outline" onClick={() => editQuiz(quiz.id as string)} >
               <Edit />
             </Button>
-            <Button size="sm" variant="outline" onClick={() => deleteQuiz(quiz.id as string)}>
+            <Button size="sm" variant="outline" onClick={onDelete}>
               <Trash />
             </Button>
           </>}
