@@ -35,9 +35,6 @@ export const QuizCard = ({ quiz, onPlay, onShare, isOwned = false, onDelete }: Q
           </Button>
           
           {isOwned && <>
-            <Button size="sm" variant="outline" onClick={() => editQuiz(quiz.id as string)} >
-              <Edit />
-            </Button>
             <Button size="sm" variant="outline" onClick={onDelete}>
               <Trash />
             </Button>
@@ -47,7 +44,7 @@ export const QuizCard = ({ quiz, onPlay, onShare, isOwned = false, onDelete }: Q
           </Button>
         </div>
         {isOwned && (
-          <div className="text-purple-400 text-xs font-semibold">Your Quiz</div>
+          <div className="text-purple-400 text-xs font-semibold pl-2">Your Quiz</div>
         )}
       </div>
     </div>
