@@ -1,26 +1,26 @@
 'use client';
 
-interface QuestionOption {
-  id: string;
-  option: string;
-  isCorrect: boolean;
-}
-
 interface Question {
   id: string;
   question: string;
-  options: QuestionOption[];
 }
 
 interface QuizQuestionProps {
   question: Question;
+  options: {
+    id: string;
+    option: string;
+    isCorrect: boolean;
+    questionId: string;
+}[];
   selectedOptionId?: string;
   onAnswerSelect: (questionId: string, optionId: string) => void;
   questionNumber: number;
 }
 
 export function QuizQuestion({ 
-  question, 
+  question,
+  options,
   selectedOptionId, 
   onAnswerSelect, 
   questionNumber 
@@ -34,7 +34,7 @@ export function QuizQuestion({
       </div>
 
       <div className="space-y-3">
-        {question.options.map((option, index) => (
+        {options.map((option, index) => (
           <button
             key={option.id}
             onClick={() => onAnswerSelect(question.id, option.id)}

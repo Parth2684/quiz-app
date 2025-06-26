@@ -48,6 +48,7 @@ export const POST = async(req: NextRequest) => {
             const allOptions: Prisma.OptionCreateManyInput[] = questionAnswer.flatMap((q, index) => {
                 const questionId = questionIds[index];
                 return q.options.map((opt) => ({
+                    quizId: quizId,
                     id: uuidv4(),
                     option: opt,
                     questionId,

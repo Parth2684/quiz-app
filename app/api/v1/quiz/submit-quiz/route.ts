@@ -5,7 +5,7 @@ import { z } from "zod";
 import { v4 as uuidv4 } from "uuid"
 
 
-export default async function POST (req: NextRequest) {
+export async function POST (req: NextRequest) {
     const submitQuizSchema = z.object({
         quizId: z.string(),
         answersArray: z.array(

@@ -31,3 +31,27 @@ export interface QuizWithoutQuestionAnswer {
     attemptedAt: Date
   }[]
 }
+
+
+export interface IQuizPlay {
+  id: string; 
+  name: string;
+  description: string | null;
+  questions: Array<{
+      id: string;
+      question: string;
+  }>;
+  options: Array<{
+      id: string;
+      option: string;
+      isCorrect: boolean;
+      questionId: string
+  }>;
+  createdAt: Date;
+  createdById: string;
+  createdBy: {
+      id: string;
+      name: string;
+  };
+  
+}

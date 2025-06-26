@@ -46,7 +46,8 @@ model Quiz {
   description       String?
   createdById         String    
   createdAt         DateTime  @default(now())  
-  questions         Question[] 
+  questions         Question[]
+  options           Option[] 
   createdBy         User  @relation(fields: [createdById], references: [id], onDelete: Cascade)
   quizAttempt     QuizAttempt[]
 }
@@ -65,8 +66,10 @@ model Option {
   option           String
   isCorrect         Boolean 
   questionId        String
+  quizId            String
   question          Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
   answers         QuizAnswer[]
+  quiz            Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
 }
 
 model QuizAttempt {

@@ -23,7 +23,7 @@ export default function TopBar ({isSignnedIn}: {isSignnedIn: boolean}) {
             initial={{ y: -100 }}
             animate={{ y:0 }}
             transition={{ duration: 0.6 }}
-        >
+            >
             <div className="max-w-7xl mx-auto flex justify-between items-center pointer-events-auto">
                 <motion.div
                     className="text-2xl sm:text-3xl font-bold bg-linear-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent cursor-pointer"

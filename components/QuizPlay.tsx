@@ -7,29 +7,14 @@ import { Button } from "./Button";
 import { QuizResults } from "./QuizResults";
 import { QuizProgress } from "./QuizProgress";
 import { QuizQuestion } from "./QuizQuestion";
+import { axiosInstance } from "@/lib/axiosInstance";
+import { IQuizPlay } from "@/types/quiz"
+import toast from "react-hot-toast";
 
-interface Quiz {
-    id: string; 
-    name: string;
-    description: string | null;
-    questions: Array<{
-        id: string;
-        question: string;
-        options: Array<{
-        id: string;
-        option: string;
-        isCorrect: boolean;
-        }>;
-    }>;
-    createdBy: {
-        id: string;
-        name: string;
-    };
-    
-}
+
 
 interface QuizPlayProps {
-    quiz: Quiz        
+    quiz: IQuizPlay      
 }
 
 export function QuizPlay ({ quiz }: QuizPlayProps ) {
@@ -41,6 +26,7 @@ export function QuizPlay ({ quiz }: QuizPlayProps ) {
     const [timeElapsed, setTimeElapsed] = useState(0);
 
     const currentQuestion = quiz.questions[currentQuestionIndex];
+    const currentOptions = quiz.options.filter(opt => opt.questionId === currentQuestion.id)
     const isLastQuestion = currentQuestionIndex === quiz.questions.length - 1;
     const canProceed = answers[currentQuestion.id];
 
@@ -74,13 +60,17 @@ export function QuizPlay ({ quiz }: QuizPlayProps ) {
         }));
 
         
-        const result = await submitQuizAttempt(quiz.id, answersArray);
+        const result = await axiosInstance.post(`/api/v1/quiz/submit-quiz/`, {
+            quizId: quiz.id,
+            answersArray
+        });
         
-        if (result.success) {
+        if (result.status == 200) {
         setResults(result);
         setQuizCompleted(true);
         } else {
-        alert('Failed to submit quiz. Please try again.');
+            console.error(result.statusText)
+        toast.error('Failed to submit quiz. Please try again.');
         }
         
         setIsSubmitting(false);
@@ -116,6 +106,7 @@ export function QuizPlay ({ quiz }: QuizPlayProps ) {
             <Card>
             <QuizQuestion
                 question={currentQuestion}
+                options= {currentOptions}
                 selectedOptionId={answers[currentQuestion.id]}
                 onAnswerSelect={handleAnswerSelect}
                 questionNumber={currentQuestionIndex + 1}
