@@ -4,12 +4,13 @@ import { useState } from "react";
 import Header from "./Header";
 import { Card } from "./Card";
 import { Button } from "./Button";
-import { QuizResults } from "./QuizResults";
 import { QuizProgress } from "./QuizProgress";
 import { QuizQuestion } from "./QuizQuestion";
 import { axiosInstance } from "@/lib/axiosInstance";
 import { IQuizPlay } from "@/types/quiz"
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { QuizSubmitModal } from "./SubmitQuizModal";
 
 
 
@@ -18,13 +19,13 @@ interface QuizPlayProps {
 }
 
 export function QuizPlay ({ quiz }: QuizPlayProps ) {
+    const [showSubmitModal, setShowSubmitModal] = useState(false);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState<Record<string, string>>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [quizCompleted, setQuizCompleted] = useState(false);
-    const [results, setResults] = useState<any>(null);
-    const [timeElapsed, setTimeElapsed] = useState(0);
+    
 
+    const router = useRouter()
     const currentQuestion = quiz.questions[currentQuestionIndex];
     const currentOptions = quiz.options.filter(opt => opt.questionId === currentQuestion.id)
     const isLastQuestion = currentQuestionIndex === quiz.questions.length - 1;
@@ -39,9 +40,9 @@ export function QuizPlay ({ quiz }: QuizPlayProps ) {
 
     const handleNext = () => {
         if (isLastQuestion) {
-        handleSubmitQuiz();
+            setShowSubmitModal(true)
         } else {
-        setCurrentQuestionIndex(prev => prev + 1);
+            setCurrentQuestionIndex(prev => prev + 1);
         }
     };
 
@@ -66,8 +67,8 @@ export function QuizPlay ({ quiz }: QuizPlayProps ) {
         });
         
         if (result.status == 200) {
-        setResults(result);
-        setQuizCompleted(true);
+            toast.success("Submitted Response Successfully")
+            router.push("/home")
         } else {
             console.error(result.statusText)
         toast.error('Failed to submit quiz. Please try again.');
@@ -76,20 +77,8 @@ export function QuizPlay ({ quiz }: QuizPlayProps ) {
         setIsSubmitting(false);
     };
 
-    if (quizCompleted && results) {
-        return (
-        <div className="container mx-auto px-4 py-8">
-            <QuizResults
-            quiz={quiz}
-            results={results}
-            answers={answers}
-            timeElapsed={timeElapsed}
-            />
-        </div>
-        );
-    }
 
-    return (
+    return (<>
         <div className="container mx-auto px-4 py-8">
         <Header 
             title={quiz.name}
@@ -137,5 +126,15 @@ export function QuizPlay ({ quiz }: QuizPlayProps ) {
             </Card>
         </div>
     </div>
+    <QuizSubmitModal
+        isOpen={showSubmitModal}
+        onClose={() => setShowSubmitModal(false)}
+        onConfirm={handleSubmitQuiz}
+        totalQuestions={quiz.questions.length}
+        answeredQuestions={Object.keys(answers).length}
+        quizName={quiz.name}
+        isSubmitting={isSubmitting}
+    />
+  </>
     )
 } 

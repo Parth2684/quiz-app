@@ -1,3 +1,5 @@
+export const dynamic = 'force-static'; 
+
 import { Footer } from "@/components/landing/Footer";
 import { CTASection } from "@/components/landing/CTASection";
 import { FeaturesSection } from "@/components/landing/FeatureSection";
