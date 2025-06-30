@@ -5,7 +5,7 @@ import Background from "@/components/layout/Background";
 import Cursorflow from "@/components/layout/Cursorflow";
 import TopBar from "@/components/layout/TopBar";
 import { getServerSession, Session } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import { authOptions } from "@/authOptions/authOptions";
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
 
 

@@ -4,7 +4,7 @@ import { auth } from "@/actions/authAction"
 
 
 
-export default async function () {
+export default async function Home() {
     const session = await auth()
     async function getQuizes () {
         const quizes = await prisma.quiz.findMany({

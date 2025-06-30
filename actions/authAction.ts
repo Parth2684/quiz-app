@@ -1,5 +1,5 @@
 "use server"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/authOptions/authOptions";
 import { getServerSession } from "next-auth";
 
 
