@@ -9,8 +9,8 @@ export default async function QuizLayout ({ children }: Readonly<{children: Reac
     if(!session || (session == undefined || null)) {
         redirect("/signup")
     }else {
-        return <body>
-                {children}
-            </body>
+        return <>
+        {children}
+        </>
     }
 } 

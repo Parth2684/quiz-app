@@ -1,10 +1,16 @@
+import { auth } from "@/actions/authAction";
 import AuthHeader from "@/components/AuthHeader";
+import { redirect } from "next/navigation";
 
 interface AuthLayoutProps {
     children: React.ReactNode;
 }
   
   export default async function AuthLayout ({ children }: AuthLayoutProps) {
+    const session = await auth()
+    if(session) {
+      redirect("/home")
+    }
     return (
       <div className="max-h-screen bg-linear-to-br from-purple-900 via-blue-900 to-indigo-900 flex justify-center px-4">
 
