@@ -1,5 +1,5 @@
 "use client"
-import { FormEvent, MouseEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import { Card } from "./Card";
 import { Alert } from "./Alert";
 import { InputBar } from "./InputBar";

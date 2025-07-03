@@ -1,4 +1,3 @@
-export const dynamic = "force-dynamic"
 import { VerificationPage } from "@/components/VerificationPage"
 import { NotVerified } from "@/components/NotVerified"
 import axios from "axios"

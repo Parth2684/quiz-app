@@ -16,7 +16,7 @@ import { axiosInstance } from "@/lib/axiosInstance";
 
 interface HomePageProps {
   quizes: QuizWithoutQuestionAnswer[];
-  session?: Session;
+  session?: Session | null;
   totalUsers: number;
 }
 
@@ -48,10 +48,10 @@ export default function HomePage({ quizes, session, totalUsers }: HomePageProps)
       
       switch (activeFilter) {
         case 'Popular':
-          return matchesSearch && popularQuizes; // Define what makes a quiz popular
+          return matchesSearch; // Define what makes a quiz popular
         case 'Recent':
           // Assuming there's a createdAt field, otherwise use current logic
-          return matchesSearch;
+          return matchesSearch && quizes.sort((a, b) => Number(b.createdAt) - Number(a.createdAt));
         case 'My Quizzes':
           return matchesSearch && quiz.createdById === session?.user.id;
         default:

@@ -23,6 +23,10 @@ export async function POST (req: NextRequest) {
             auth()
         ])
 
+        if(!session) {
+            return NextResponse.json({msg: "You are not authorised to attempt this quiz"}, {status:409})
+        }
+
         const userId = session.user.id
         
         

@@ -14,7 +14,7 @@ export async function PUT (req: NextRequest) {
 
 
         await prisma.user.update({
-            where: { jwt: token },
+            where: { jwt: token, verified: false },
             data: { verified: true },
           });
 

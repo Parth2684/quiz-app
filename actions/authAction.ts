@@ -4,9 +4,11 @@ import { getServerSession } from "next-auth";
 
 
 export async function auth () {
-    const session = await getServerSession(authOptions);
-    if(!session){
-        throw new Error("Un-Authorized action")
+    let session;
+    try {
+        session = await getServerSession(authOptions);        
+    } catch (error) {
+        throw new Error("Unauthorised action")
     }
     return session;
 } 

@@ -3,7 +3,7 @@ import { z } from "zod";
 export const questionAnswerSchema = z.object({
         question: z.string().min(2, "Question Should be atleast 2 characters long"),
         options: z.array(z.string().min(1, "Option cannot be empty")),
-        correctOption: z.string()
+        correctOption: z.string().nonempty()
     })
 
 export type QuestionAnswerSchema = z.infer<typeof questionAnswerSchema>
@@ -22,6 +22,7 @@ export interface QuizWithoutQuestionAnswer {
     description?: string | null;
     id?: string;
     createdById?: string;
+    createdAt: Date
 
   quizAttempt: {
     id: string
