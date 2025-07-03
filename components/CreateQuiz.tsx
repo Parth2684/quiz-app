@@ -156,13 +156,13 @@ export const CreateQuiz = () => {
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 p-6">
         <div className="max-w-4xl mx-auto">
           <div className="flex justify-between items-center mb-8">
-            <h1 className="text-4xl font-bold text-white">Create Quiz</h1>
+            <h1 className="text-2xl font-bold text-white">Create Quiz</h1>
             <div className="flex gap-3">
-              <Button variant="outline" onClick={togglePreview}>
+              <Button variant="outline" size="sm" onClick={togglePreview}>
                 <Eye size={20} />
                 Preview
               </Button>
-              <Button variant="primary" onClick={saveQuiz} size="lg" isLoading={isLoading}>
+              <Button variant="primary" onClick={saveQuiz} size="sm" isLoading={isLoading}>
                 <Save size={20} />
                 {isLoading ? 'Saving...' : 'Save Quiz'}
               </Button>

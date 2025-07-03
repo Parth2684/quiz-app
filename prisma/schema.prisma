@@ -76,13 +76,11 @@ model QuizAttempt {
   id              String      @id @default(uuid())
   userId          String      
   quizId          String
-  score           Int
+  score           Int         
   attemptedAt     DateTime    @default(now())
   user            User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   quiz            Quiz  @relation(fields: [quizId], references: [id], onDelete: Cascade)
   answers         QuizAnswer[]
-
-  @@unique([userId, quizId])
 }
 
 

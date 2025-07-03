@@ -16,7 +16,7 @@ import { axiosInstance } from "@/lib/axiosInstance";
 
 interface HomePageProps {
   quizes: QuizWithoutQuestionAnswer[];
-  session: Session;
+  session?: Session;
   totalUsers: number;
 }
 
@@ -31,14 +31,15 @@ export default function HomePage({ quizes, session, totalUsers }: HomePageProps)
 
   // Memoized calculations for better performance
   const { userQuizzes, topQuizzes, totalAttempts } = useMemo(() => {
-    const userQuizzes = quizes.filter(quiz => quiz.createdById === session.user.id);
+    const userQuizzes = quizes.filter(quiz => quiz.createdById === session?.user.id);
     const topQuizzes = [...quizes].sort((a, b) => b.quizAttempt.length - a.quizAttempt.length);
     const totalAttempts = quizes.reduce((total, quiz) => total + quiz.quizAttempt.length, 0);
     
     return { userQuizzes, topQuizzes, totalAttempts };
-  }, [quizes, session.user.id]);
+  }, [quizes, session?.user.id]);
 
   // Filtered quizzes with proper search and filter logic
+  const popularQuizes = quizes.sort((a, b) => b.quizAttempt.length - a.quizAttempt.length)
   const filteredQuizzes = useMemo(() => {
     return topQuizzes.filter(quiz => {
       const matchesSearch = !searchTerm || 
@@ -47,17 +48,17 @@ export default function HomePage({ quizes, session, totalUsers }: HomePageProps)
       
       switch (activeFilter) {
         case 'Popular':
-          return matchesSearch && quiz.quizAttempt.length > 10; // Define what makes a quiz popular
+          return matchesSearch && popularQuizes; // Define what makes a quiz popular
         case 'Recent':
           // Assuming there's a createdAt field, otherwise use current logic
           return matchesSearch;
         case 'My Quizzes':
-          return matchesSearch && quiz.createdById === session.user.id;
+          return matchesSearch && quiz.createdById === session?.user.id;
         default:
           return matchesSearch;
       }
     });
-  }, [topQuizzes, searchTerm, activeFilter, session.user.id]);
+  }, [topQuizzes, searchTerm, activeFilter, session?.user.id]);
 
   // Optimized event handlers with useCallback
   const handlePlayQuiz = useCallback((quizId: string) => {
@@ -89,7 +90,11 @@ export default function HomePage({ quizes, session, totalUsers }: HomePageProps)
   }, []);
 
   const handleCreateQuiz = useCallback(() => {
-    router.push("/quiz/create");
+    if(!session) {
+      router.push("/signup")
+    }else{
+      router.push("/quiz/create");
+    }
   }, [router]);
 
   const handleDeleteQuiz = useCallback(async (quizId: string) => {
@@ -228,8 +233,8 @@ export default function HomePage({ quizes, session, totalUsers }: HomePageProps)
                 quiz={quiz} 
                 onPlay={handlePlayQuiz}
                 onShare={() => handleShareQuiz(quiz.id as string, quiz.name)}
-                isOwned={quiz.createdById === session.user.id}
-                onDelete={quiz.createdById === session.user.id ? () => openDeleteModal(quiz.id as string) : undefined}
+                isOwned={quiz.createdById === session?.user.id}
+                onDelete={quiz.createdById === session?.user.id ? () => openDeleteModal(quiz.id as string) : undefined}
               />
             ))}
           </div>

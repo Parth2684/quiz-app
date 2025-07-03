@@ -22,10 +22,10 @@ interface QuestionProps {
 export const Question = ({ question, questionIndex, onUpdate, onDelete, onAddOption, onUpdateOption, onDeleteOption, onToggleCorrect }: QuestionProps) => {
     return (
       <Card className="mb-6">
-        <div className="flex items-start gap-4 mb-6">
+        <div className="flex items-start gap-2 mb-6">
           <div className="flex-1">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
+            <div className="flex items-center gap-2 mb-6">
+              <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full text-xs font-semibold shadow-lg">
                 Question {questionIndex + 1}
               </span>
               <Button
@@ -42,7 +42,7 @@ export const Question = ({ question, questionIndex, onUpdate, onDelete, onAddOpt
               placeholder="Enter your question..."
               value={question.question}
               onChange={(e) => onUpdate(questionIndex, e.target.value)}
-              className="mb-6 text-md font-medium"
+              className="mb-2 text-sm font-medium"
             />
           </div>
         </div>

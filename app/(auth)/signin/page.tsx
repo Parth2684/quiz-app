@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+export const dynamic = 'force-static'
 import { SigninComponent } from "@/components/SigninComponent";
 
 

@@ -36,7 +36,7 @@ export const SigninComponent = () => {
                 
                 setIsLoading(false);
             }}
-            className="space-y-6"
+            className="space-y-2"
             >
             <InputBar
               label="Email"

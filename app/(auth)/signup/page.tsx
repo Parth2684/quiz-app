@@ -1,3 +1,4 @@
+export const dynamic = 'force-static'
 import { SignupComponent } from "@/components/SignupComponent";
 
 

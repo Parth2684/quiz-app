@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic';
 import { QuizPlay } from "@/components/QuizPlay";
 import prisma from "@/lib/singleton";
 import { redirect } from "next/navigation";

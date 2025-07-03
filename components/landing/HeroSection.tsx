@@ -11,7 +11,7 @@ export function HeroFunction () {
         { number: "95%", label: "User Satisfaction" },
         { number: "150+", label: "Countries" }
     ]
-    return <section className="relative z-10 px-4 sm:px-6 pt-32 sm:pt-40 pb-16 sm:pb-20 text-center">
+    return <section className="relative z-10 px-4 sm:px-6 pt-28 sm:pt-28 pb-16 sm:pb-20 text-center">
         <motion.div
             initial={{ opacity: 0, y:50 }}
             animate={{ opacity:1, y: 0 }}

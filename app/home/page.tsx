@@ -2,10 +2,13 @@ import HomePage from "@/components/HomePage"
 import prisma from "@/lib/singleton"
 import { auth } from "@/actions/authAction"
 
-
-
 export default async function Home() {
-    const session = await auth()
+    let session;
+    try {
+        session = await auth()
+    } catch (error) {
+        session = undefined
+    }
     async function getQuizes () {
         const quizes = await prisma.quiz.findMany({
             include: {

@@ -17,13 +17,13 @@ export const QuizHeader = ({ name, description, onNameChange, onDescriptionChang
             placeholder="Quiz Name..."
             value={name}
             onChange={(e) => onNameChange(e.target.value)}
-            className="text-2xl font-bold"
+            className="text-lg font-bold"
           />
           <InputBar
             placeholder="Quiz Description (optional)..."
             value={description}
             onChange={(e) => onDescriptionChange(e.target.value)}
-            className="text-lg"
+            className="text-sm"
           />
         </div>
       </Card>

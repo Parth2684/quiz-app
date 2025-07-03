@@ -26,14 +26,14 @@ export const Option = ({ option, questionIndex, optionIndex, onUpdate, onDelete,
               : 'border-white/30 hover:border-green-400 text-white/70 hover:text-green-400'
           }`}
         >
-          {isCorrect && <Check size={14} />}
+          {isCorrect && <Check size={12} />}
         </button>
         
         <InputBar
           placeholder="Enter option text..."
           value={option}
           onChange={(e) => onUpdate(questionIndex, optionIndex, e.target.value)}
-          className="flex-1 w-full"
+          className="flex-1 w-full text-xs"
         />
         
         <Button
