@@ -56,3 +56,75 @@ export interface IQuizPlay {
   };
   
 }
+
+// types/analytics.ts
+export interface QuizAttemptSummary {
+  id: string;
+  userId: string;
+  quizId: string;
+  score: number;
+  attemptedAt: Date;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+  };
+}
+
+export interface QuizAnswerDetail {
+  id: string;
+  questionId: string;
+  optionId: string;
+  question: {
+    id: string;
+    question: string;
+    options: {
+      id: string;
+      option: string;
+      isCorrect: boolean;
+    }[];
+  };
+  selectedOption: {
+    id: string;
+    option: string;
+    isCorrect: boolean;
+  };
+}
+
+export interface QuizAttemptDetail {
+  id: string;
+  userId: string;
+  quizId: string;
+  score: number;
+  attemptedAt: Date;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+  };
+  answers: QuizAnswerDetail[];
+}
+
+export interface QuizAnalytics {
+  quiz: {
+    id: string;
+    name: string;
+    description?: string;
+    totalQuestions: number;
+  };
+  attempts: QuizAttemptSummary[];
+  averageScore: number;
+  highestScore: number;
+  lowestScore: number;
+  totalAttempts: number;
+}
+
+export interface QuizDetailedResults {
+  quiz: {
+    id: string;
+    name: string;
+    description?: string;
+    totalQuestions: number;
+  };
+  attempt: QuizAttemptDetail;
+}
