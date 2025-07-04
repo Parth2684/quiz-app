@@ -66,7 +66,7 @@ export default function HomePage({ quizes, session, totalUsers }: HomePageProps)
   }, [router]);
 
   const showStats = useCallback((quizId: string) => {
-    router.push(`/quiz/stats/${quizId}`);
+    router.push(`/quiz/${quizId}/attempts`);
   }, [router]);
 
   const handleShareQuiz = useCallback(async (quizId: string, quizName: string) => {

@@ -34,7 +34,7 @@ export default function TopBar ({isSignnedIn}: {isSignnedIn: boolean}) {
                 </motion.div>
 
                 
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-4 print:hidden">
                     {isSignnedIn ? <motion.a
                         className="hidden sm:block bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer"
                         whileHover={{ scale: 1.05 }}
