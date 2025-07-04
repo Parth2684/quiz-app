@@ -6,12 +6,11 @@ import PrintButton from "@/components/PrintButton";
 
 export default async function AttemptDetailsPage({
   params
-}: {
-  params: { attemptId: string; quizId: string };
-}) {
+}: { params: Promise<{ quizId: string, attemptId: string }> }) {
+  const { quizId, attemptId } = await params
   const session = await auth()
   const attempt = await prisma.quizAttempt.findFirst({
-    where: { id: params.attemptId },
+    where: { id: attemptId },
     include: {
         user: true,
         answers: {
