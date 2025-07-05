@@ -33,7 +33,6 @@ export interface QuizWithoutQuestionAnswer {
   }[]
 }
 
-
 export interface IQuizPlay {
   id: string; 
   name: string;
