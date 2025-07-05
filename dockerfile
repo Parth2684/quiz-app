@@ -1,34 +1,27 @@
-FROM node:20-slim AS builder
-
+FROM node:20-slim
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y openssl
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y openssl && \
+    npm install -g pm2 && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-COPY package*.json ./
-RUN npm install
+COPY package*.json .
+
+RUN npm install 
 
 COPY prisma ./prisma
+
 RUN npx prisma generate
 
-ARG NEXTAUTH_SECRET
-ENV NEXTAUTH_SECRET=$NEXTAUTH_SECRET
-
 COPY . .
-RUN npm run build
 
-FROM node:20-slim
+ARG NEXTAUTH=NEXT_AUTH_SECRET
+ENV NEXT_AUTH_SECRET=${NEXTAUTH}
 
-WORKDIR /app
 
-RUN npm install -g pm2
-
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/ecosystem.config.js ./ecosystem.config.js
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/prisma ./prisma
+RUN npm run build 
 
 EXPOSE 3000
 
-CMD [ "pm2", "start", "ecosystem.config.js" ]
+CMD ["pm2-runtime", "npm", "--", "start"]
