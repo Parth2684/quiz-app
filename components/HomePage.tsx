@@ -61,7 +61,10 @@ export default function HomePage({ quizes, session, totalUsers }: HomePageProps)
   }, [topQuizzes, searchTerm, activeFilter, session?.user.id]);
 
   // Optimized event handlers with useCallback
-  const handlePlayQuiz = useCallback((quizId: string) => {
+  const handlePlayQuiz = useCallback((quizId: string, createdById: string) => {
+    if(createdById == session?.user.id) {
+      router.push(`/quiz/${quizId}/attempts`)
+    }
     router.push(`/quiz/play/${quizId}`);
   }, [router]);
 

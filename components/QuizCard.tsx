@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 interface QuizCardProps {
     quiz: QuizWithoutQuestionAnswer
-    onPlay: (quizId: string) => void;
+    onPlay: (quizId: string, createdById: string) => void;
     onShare: (quizId: string) => void;
     isOwned?: boolean
     onDelete?: () => void;
@@ -29,7 +29,7 @@ export const QuizCard = ({ quiz, onPlay, onShare, isOwned = false, onDelete }: Q
       
       <div className="flex items-center justify-between mt-auto">
         <div className="flex gap-2">
-          <Button size="sm" onClick={() => onPlay(quiz.id as string)}>
+          <Button size="sm" onClick={() => onPlay(quiz.id as string, quiz.createdById as string)}>
             <Play className="w-4 h-4" />
             {isOwned ? "Show Stats" : "Play" }
           </Button>
