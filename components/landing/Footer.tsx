@@ -15,12 +15,6 @@ export const Footer = () => {
           <p className="text-gray-400 mb-6 sm:mb-8 text-sm sm:text-base">
             Making quiz creation effortless and fun for everyone.
           </p>
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-8 text-xs sm:text-sm text-gray-500">
-            <a href="#" className="hover:text-purple-400 transition-colors">Privacy</a>
-            <a href="#" className="hover:text-purple-400 transition-colors">Terms</a>
-            <a href="#" className="hover:text-purple-400 transition-colors">Support</a>
-            <a href="#" className="hover:text-purple-400 transition-colors">Contact</a>
-          </div>
         </div>
       </footer>
     );
