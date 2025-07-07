@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import Background from "@/components/layout/Background";
-import Cursorflow from "@/components/layout/Cursorflow";
 import TopBar from "@/components/layout/TopBar";
 import { getServerSession, Session } from "next-auth";
 import { authOptions } from "@/authOptions/authOptions";
+import LoadingOverlay from "@/components/layout/LoadingOverlay";
+import RouterLoadingWrapper from "@/components/layout/RouterLoadingWrapper";
+import RouterPushPatch from "@/components/layout/RouterPushPatch";
 
 
 
@@ -66,13 +68,17 @@ export default async function RootLayout({
 
       <body>
         <div className="min-h-screen bg-linear-to-br from-purple-900 via-blue-900 to-indigo-900 text-white overflow-hidden relative print:pt-0 print:mt-0 print:mb-0 print:pl-0 print:pr-0">
-          <Background /> 
-          {/* <Cursorflow /> */}
+          <Background />
           <TopBar isSignnedIn={Boolean(isSignedIn)} />
+          <RouterLoadingWrapper>
+          <RouterPushPatch>
+            <LoadingOverlay />
           <Toaster position="top-center" reverseOrder={false} />
           <div className="mt-14 mb-14">
             {children}
           </div>
+          </RouterPushPatch>
+          </RouterLoadingWrapper>
         </div>
       </body>
     </html>

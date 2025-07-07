@@ -26,9 +26,9 @@ export default async function MyQuizzes () {
           <Link
             key={quiz.id}
             href={`/quiz/${quiz.id}/attempts`} 
-            className="block p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition"
+            className="block p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition hover:text-purple-700"
           >
-            <h2 className="text-lg font-medium hover:text-purple-700">{quiz.name}</h2>
+            <h2 className="text-lg font-medium">{quiz.name}</h2>
             {quiz.description && (
               <p className="text-sm text-gray-600 mt-1">
                 {quiz.description}
