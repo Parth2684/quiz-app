@@ -64,8 +64,9 @@ export default function HomePage({ quizes, session, totalUsers }: HomePageProps)
   const handlePlayQuiz = useCallback((quizId: string, createdById: string) => {
     if(createdById == session?.user.id) {
       router.push(`/quiz/${quizId}/attempts`)
-    }
-    router.push(`/quiz/play/${quizId}`);
+    }else{
+      router.push(`/quiz/play/${quizId}`);
+    }  
   }, [router]);
 
   const showStats = useCallback((quizId: string) => {
@@ -197,7 +198,7 @@ export default function HomePage({ quizes, session, totalUsers }: HomePageProps)
                 </Button>
               </Link>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 w-[85%] md:grid-cols-2 lg:grid-cols-3 gap-6">
               {userQuizzes.slice(0, 6).map(quiz => (
                 <QuizCard 
                   key={quiz.id} 
@@ -229,7 +230,7 @@ export default function HomePage({ quizes, session, totalUsers }: HomePageProps)
             onSearchChange={setSearchTerm}
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 w-[85%] md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredQuizzes.map(quiz => (
               <QuizCard 
                 key={quiz.id} 

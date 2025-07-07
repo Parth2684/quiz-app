@@ -15,10 +15,8 @@ interface QuizCardProps {
 
 export const QuizCard = ({ quiz, onPlay, onShare, isOwned = false, onDelete }: QuizCardProps) => {
   const router = useRouter()
-  function editQuiz(quizId: string) {
-    router.push(`/quiz/edit/${quizId}`)
-  }
-  return <Card className="p-6 hover:scale-105 transition-all duration-300 hover:shadow-2xl">
+
+  return <Card className="p-6">
     <div className="flex flex-col h-full">
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">

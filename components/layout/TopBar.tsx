@@ -19,12 +19,12 @@ export default function TopBar ({isSignnedIn}: {isSignnedIn: boolean}) {
     }, [])
 
     return <motion.header
-            className={ `fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 py-4 sm:py-6 pointer-events-none                                                                                                                                                                                                                                                                                                                  transition-all duration-300 ${ isScrolled ? 'bg-black/20 backdrop-blur-lg border-b border-white/10' : '' }` }
+            className={ `fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 py-2 sm:py-3 backdrop-blur-lg border-b border-gray-600                                                                                                                                                                                                                                                                                                                  transition-all duration-300 ${ isScrolled ? 'bg-black/20 backdrop-blur-lg border-b border-white/10' : '' }` }
             initial={{ y: -100 }}
             animate={{ y:0 }}
             transition={{ duration: 0.6 }}
             >
-            <div className="max-w-7xl mx-auto flex justify-between items-center pointer-events-auto">
+            <div className="max-w-7xl mx-auto flex justify-between items-center">
                 <motion.div
                     className="text-2xl sm:text-3xl font-bold bg-linear-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent cursor-pointer"
                     whileHover={{ scale: 1.05 }}
@@ -36,7 +36,7 @@ export default function TopBar ({isSignnedIn}: {isSignnedIn: boolean}) {
                 
                 <div className="flex items-center space-x-4 print:hidden">
                     {isSignnedIn ? <motion.a
-                        className="hidden sm:block bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer"
+                        className="sm:block bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={(e) => signOut({callbackUrl: "/"})}

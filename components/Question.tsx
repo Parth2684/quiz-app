@@ -69,7 +69,7 @@ export const Question = ({ question, questionIndex, onUpdate, onDelete, onAddOpt
             variant="outline"
             size="sm"
             onClick={() => onAddOption(questionIndex)}
-            className="mt-6"
+            className="mt-6 text-white"
           >
             <Plus size={16} />
             Add Option
