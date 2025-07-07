@@ -27,7 +27,7 @@ export default function AuthHeader() {
   }
 
   return (
-    <div className="text-center mb-8">
+    <div className="text-center mb-5 mt-2">
       <h1 className="text-3xl font-bold bg-linear-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">
         {title}
       </h1>
