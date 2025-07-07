@@ -19,7 +19,7 @@ export default async function Home() {
     <HeroFunction />
     <FeaturesSection />
     <HowItWorksSection />
-    <TestimonialsSection />
+    {/* <TestimonialsSection /> */}
     <CTASection />
     <Footer />
   </div>
