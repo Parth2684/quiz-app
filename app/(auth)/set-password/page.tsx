@@ -1,10 +1,16 @@
 import { VerificationPage } from "@/components/VerificationPage"
 import { NotVerified } from "@/components/NotVerified"
 import axios from "axios"
+import { Metadata } from "next";
 
 interface PageProps {
   searchParams: Promise<{ token?: string }>
 }
+export const metadata: Metadata = {
+  title: "Set Your Password | Quizzo",
+  description: "Secure your Quizzo account by setting a strong password. Quick and safe account setup.",
+};
+
 
 async function verifyEmail(token: string) {
   try {

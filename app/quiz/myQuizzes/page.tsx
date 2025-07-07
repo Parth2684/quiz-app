@@ -3,6 +3,10 @@ import { NotVerified } from "@/components/NotVerified";
 import prisma from "@/lib/singleton";
 import Link from "next/link";
 
+export const metadata = {
+  title: "My Quizzes | Quizzo",
+  description: "View, manage, and edit quizzes you’ve created on Quizzo. Total control in one place.",
+};
 
 
 export default async function MyQuizzes () {

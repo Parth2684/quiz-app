@@ -12,9 +12,37 @@ import RouterPushPatch from "@/components/layout/RouterPushPatch";
 
 
 export const metadata: Metadata = {
-  title: "Quizzo",
-  description: "Get the best quizzes",
+  title: "Quizzo - Create & Solve Quizzes Effortlessly",
+  description: "Quizzo is a full-stack quiz platform with real-time leaderboard, secure auth, and dynamic quiz creation.",
+  keywords: ["Quizzo", "quiz app", "full stack", "Next.js", "Prisma", "NextAuth", "leaderboard", "Zod"],
+  authors: [{ name: "Parth Bhosle", url: "https://www.linkedin.com/in/parth-bhosle-46a078271/" }],
+  creator: "Parth Bhosle",
+  metadataBase: new URL("https://quizzo.parthcodes.com"),
+  openGraph: {
+    title: "Quizzo - Create & Solve Quizzes",
+    description: "A powerful quiz platform with dynamic quiz creation, real-time scoring and secure login.",
+    url: "https://quizzo.yoursite.com",
+    siteName: "Quizzo",
+    images: [
+      {
+        url: "/favicon.ico", 
+        alt: "Quizzo OG Image",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Quizzo - Create & Solve Quizzes",
+    description: "A fast, full-stack quiz app with real-time leaderboards and secure login.",
+    images: ["/favicon.ico"],
+  },
+  icons: {
+    icon: "/favicon.ico",
+  }
 };
+
 
 export default async function RootLayout({
   children,

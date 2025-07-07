@@ -1,7 +1,13 @@
 import HomePage from "@/components/HomePage"
 import prisma from "@/lib/singleton"
 import { auth } from "@/actions/authAction"
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+    title: "Dashboard | Quizzo",
+    description: "Your Quizzo hub — view your quizzes, track performance, and start solving new ones.",
+  };
+  
 export default async function Home() {
     let session;
     try {
