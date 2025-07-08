@@ -58,7 +58,7 @@ export default async function QuizAttemptsPage({ params }: { params: Promise<{ q
       <div className="space-y-4">
         {attempts.map(attempt => (
           <Link href={`/quiz/${quizId}/attempts/${attempt.id}`} key={attempt.id}>
-            <Card className="hover:bg-white/20 cursor-pointer transition">
+            <Card className="hover:bg-white/20 cursor-pointer transition mb-1.5">
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-lg text-white font-semibold">{attempt.user.name}</p>
