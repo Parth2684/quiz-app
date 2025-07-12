@@ -30,8 +30,8 @@ export default function CreateViaAi({
   const [isGenerating, setIsGenerating] = useState(false);
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-xl shadow-lg max-w-md w-full">
+    <div className="fixed inset-0 backdrop-blur-sm bg-opacity-50 flex justify-center items-center z-50">
+      <div className="p-6 rounded-xl shadow-lg max-w-md w-full">
         <h2 className="text-xl font-bold mb-4">Generate Quiz with AI</h2>
 
         <label className="block text-sm font-medium mb-1">Topic</label>
@@ -66,7 +66,30 @@ export default function CreateViaAi({
                   count
                 });
 
-                const aiQuestions: QuestionAnswer[] = res.data.questions;
+                const rawText = res.data.generatedQuiz?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (!rawText) {
+                  toast.error("Invalid Gemini response");
+                  return;
+                }
+
+                // Strip ```json and ``` from both ends
+                const cleanedJson = rawText
+                  .replace(/^```json\\n/, '')
+                  .replace(/^```json/, '')
+                  .replace(/```$/, '')
+                  .replace(/\\n```$/, '');
+
+                let parsed;
+                try {
+                  parsed = JSON.parse(cleanedJson); // should be { quiz: { questionAnswer: [...] } }
+                } catch (err) {
+                  toast.error("Failed to parse Gemini JSON");
+                  console.error("Parsing error:", err);
+                  return;
+                }
+
+                const aiQuestions: QuestionAnswer[] = parsed.quiz?.questionAnswer;
 
                 if (
                   aiQuestions &&
@@ -75,7 +98,6 @@ export default function CreateViaAi({
                     (q) =>
                       typeof q.question === "string" &&
                       Array.isArray(q.options) &&
-                      q.options.length >= 2 &&
                       typeof q.correctOption === "string" &&
                       q.options.includes(q.correctOption)
                   )
@@ -87,7 +109,7 @@ export default function CreateViaAi({
                   toast.success("AI quiz generated!");
                   setShowModal(false);
                 } else {
-                  toast.error("Invalid AI response");
+                  toast.error("AI returned invalid format");
                 }
               } catch (err) {
                 console.error(err);

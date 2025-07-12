@@ -194,12 +194,12 @@ export const CreateQuiz = () => {
           ))}
   
             <div className="flex justify-center gap-4 mb-10">
-            <Button variant="primary" onClick={addQuestion} size="lg">
+            <Button variant="primary" onClick={addQuestion} size="md">
               <Plus size={20} />
               Add Question
             </Button>
 
-            <Button variant="secondary" onClick={() => setShowAiModal(true)} size="lg">
+            <Button variant="secondary" onClick={() => setShowAiModal(true)} size="md">
               ✨ Generate with AI
             </Button>
             {showAiModal && (

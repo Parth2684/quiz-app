@@ -3,26 +3,35 @@ import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-const quizPrompt = (topic: string, count: Number) => {
-    const prompt = `Give me a quiz in the following syntax:
-    questionAnswer: {
-        question: string;
-        options: string[];
-        correctOption: string;
-    }[]
-        with dynamic number of options, options can range from 2-6
-        I wan total ${count} questions
-        on topic ${topic}
-      `
-      return prompt;
-}
+const quizPrompt = (topic: string, count: number) => {
+    return `
+  Generate a quiz with the following structure ONLY. Do NOT add any explanation or markdown. Return raw JSON only in this format:
+  
+  {
+    "quiz": {
+      "questionAnswer": [
+        {
+          "question": "Question goes here",
+          "options": ["Option 1", "Option 2", "Option 3"],
+          "correctOption": "Option 2"
+        }
+        // ${count} questions total
+      ]
+    }
+  }
+  
+  Topic: ${topic}
+  Questions: ${count}
+  Options should range from 2 to 6 per question.
+  Only ONE correct option per question. Keep formatting exact.`;
+  };
 
 
 const generateQuizSchema = z.object({
     topic: z.string(),
     count: z.number()
 })
-export default async function POST (req: NextRequest) {
+export const POST = async (req: NextRequest) => {
     try {
         const [session, body ] = await Promise.all([
             auth(),

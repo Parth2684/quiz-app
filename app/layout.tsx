@@ -13,8 +13,8 @@ import RouterPushPatch from "@/components/layout/RouterPushPatch";
 
 export const metadata: Metadata = {
   title: "Quizzo - Create & Solve Quizzes Effortlessly",
-  description: "Quizzo is a full-stack quiz platform with real-time leaderboard, secure auth, and dynamic quiz creation.",
-  keywords: ["Quizzo", "quiz app", "full stack", "Next.js", "Prisma", "NextAuth", "leaderboard", "Zod"],
+  description: "Quizzo is a full-stack quiz platform with real-time leaderboard, secure auth, and dynamic quiz creation with the help of AI.",
+  keywords: ["Quizzo", "quiz app", "full stack", "Next.js", "Prisma", "NextAuth", "leaderboard", "AI Quiz"],
   authors: [{ name: "Parth Bhosle", url: "https://www.linkedin.com/in/parth-bhosle-46a078271/" }],
   creator: "Parth Bhosle",
   metadataBase: new URL("https://quizzo.parthcodes.com"),
