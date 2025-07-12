@@ -16,14 +16,19 @@ export default async function Home() {
         session = undefined
     }
 
-    async function countPeople () {
+    async function countPeopleAndQuizes () {
         const [totalUsers, totalQuizCount] = await Promise.all([prisma.user.count(), prisma.quiz.count()])
-        return totalUsers;
+        return {
+            totalUsers,
+            totalQuizCount
+        }
     }
 
+    const propsForHome = await countPeopleAndQuizes()
+    const { totalUsers, totalQuizCount } = propsForHome 
     
-    const totalUsers = await countPeople()
+
     return <div>
-        <HomePage session={session} totalUsers={totalUsers} />
+        <HomePage session={session} totalUsers={totalUsers} totalQuizCount={totalQuizCount}/>
     </div>
 }
