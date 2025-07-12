@@ -1,6 +1,6 @@
-"use client"
+"use client";
 import { QuizWithoutQuestionAnswer } from "@/types/quiz";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import Header from "./Header";
 import { Button } from "./Button";
 import { Eye, Filter, Plus, Search, Star, Trophy, Users } from "lucide-react";
@@ -15,112 +15,161 @@ import { DeleteModal } from "./DeleteModal";
 import { axiosInstance } from "@/lib/axiosInstance";
 
 interface HomePageProps {
-  quizes: QuizWithoutQuestionAnswer[];
   session?: Session | null;
   totalUsers: number;
 }
 
-export default function HomePage({ quizes, session, totalUsers }: HomePageProps) {
+export default function HomePage({ session, totalUsers }: HomePageProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState('All');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [quizes, setQuizes] = useState<QuizWithoutQuestionAnswer[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [userQuizzesLength, setUserQuizzesLength] = useState(0)
 
   const router = useRouter();
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+  const observer = useRef<IntersectionObserver | null>(null);
 
-  // Memoized calculations for better performance
-  const { userQuizzes, topQuizzes, totalAttempts } = useMemo(() => {
-    const userQuizzes = quizes.filter(quiz => quiz.createdById === session?.user.id);
-    const topQuizzes = [...quizes].sort((a, b) => b.quizAttempt.length - a.quizAttempt.length);
-    const totalAttempts = quizes.reduce((total, quiz) => total + quiz.quizAttempt.length, 0);
-    
-    return { userQuizzes, topQuizzes, totalAttempts };
-  }, [quizes, session?.user.id]);
+  const loadMoreQuizzes = useCallback(async () => {
+    if (isLoadingMore || !hasMore) return;
 
-  // Filtered quizzes with proper search and filter logic
-  const popularQuizes = quizes.sort((a, b) => b.quizAttempt.length - a.quizAttempt.length)
-  const filteredQuizzes = useMemo(() => {
-    return topQuizzes.filter(quiz => {
-      const matchesSearch = !searchTerm || 
-        quiz.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        quiz.description?.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      switch (activeFilter) {
-        case 'Popular':
-          return matchesSearch; // Define what makes a quiz popular
-        case 'Recent':
-          // Assuming there's a createdAt field, otherwise use current logic
-          return matchesSearch && quizes.sort((a, b) => Number(b.createdAt) - Number(a.createdAt));
-        case 'My Quizzes':
-          return matchesSearch && quiz.createdById === session?.user.id;
-        default:
-          return matchesSearch;
+    setIsLoadingMore(true);
+    try {
+      const res = await axiosInstance.get(`/api/v1/home?page=${page}`);
+      const newQuizzes = res.data.quizzes;
+      const total = res.data.total;
+      setUserQuizzesLength(res.data.userQuizzes)
+
+      setQuizes(prev => {
+        const existingIds = new Set(prev.map(q => q.id));
+        const dedupedNew = newQuizzes.filter((q: any) => !existingIds.has(q.id));
+        return [...prev, ...dedupedNew];
+      });
+
+      if ((page + 1) * 9 >= total || newQuizzes.length === 0) {
+        setHasMore(false);
+      } else {
+        setPage(prev => prev + 1);
+      }
+    } catch (error) {
+      console.error("Failed to load quizzes", error);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  }, [isLoadingMore, hasMore, page]);
+
+  useEffect(() => {
+    loadMoreQuizzes();
+  }, []);
+
+  useEffect(() => {
+    if (observer.current) observer.current.disconnect();
+
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore && !isLoadingMore) {
+        loadMoreQuizzes();
       }
     });
-  }, [topQuizzes, searchTerm, activeFilter, session?.user.id]);
 
-  // Optimized event handlers with useCallback
-  const handlePlayQuiz = useCallback((quizId: string, createdById: string) => {
-    if(createdById == session?.user.id) {
-      router.push(`/quiz/${quizId}/attempts`)
-    }else{
-      router.push(`/quiz/play/${quizId}`);
-    }  
-  }, [router]);
+    if (loaderRef.current) observer.current.observe(loaderRef.current);
 
-  const showStats = useCallback((quizId: string) => {
-    router.push(`/quiz/${quizId}/attempts`);
-  }, [router]);
+    return () => observer.current?.disconnect();
+  }, [loadMoreQuizzes, hasMore, isLoadingMore]);
+
+  const { userQuizzes, totalAttempts } = useMemo(() => {
+    const userQuizzes = quizes.filter(quiz => quiz.createdById == session?.user.id)
+    const totalAttempts = quizes.reduce((acc, quiz) => acc + quiz.quizAttempt.length, 0);
+    return { userQuizzes, totalAttempts };
+  }, [quizes, session?.user.id]);
+
+  const filteredQuizzes = useMemo(() => {
+    let filtered = quizes.filter(quiz => {
+      const matchesSearch =
+        !searchTerm ||
+        quiz.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        quiz.description?.toLowerCase().includes(searchTerm.toLowerCase());
+
+      if (!matchesSearch) return false;
+
+      if (activeFilter === "My Quizzes") {
+        return quiz.createdById === session?.user.id;
+      }
+
+      return true;
+    });
+
+    switch (activeFilter) {
+      case "Popular":
+        return [...filtered].sort((a, b) => b.quizAttempt.length - a.quizAttempt.length);
+      case "Recent":
+        return [...filtered].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      case "All":
+        return [...filtered].sort((a, b) => a.name.localeCompare(b.name));
+      default:
+        return filtered;
+    }
+  }, [quizes, searchTerm, activeFilter, session?.user.id]);
+
+  const handlePlayQuiz = useCallback(
+    (quizId: string, createdById: string) => {
+      if (createdById === session?.user.id) {
+        router.push(`/quiz/${quizId}/attempts`);
+      } else {
+        router.push(`/quiz/play/${quizId}`);
+      }
+    },
+    [router, session?.user.id]
+  );
 
   const handleShareQuiz = useCallback(async (quizId: string, quizName: string) => {
     try {
       const shareUrl = `${window.location.origin}/quiz/${quizId}`;
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      
+
       if (navigator.share && isMobile) {
-        await navigator.share({
-          title: `Quiz: ${quizName}`,
-          url: shareUrl
-        });
+        await navigator.share({ title: `Quiz: ${quizName}`, url: shareUrl });
       } else {
         await navigator.clipboard.writeText(shareUrl);
         toast.success("Link copied to clipboard!");
       }
     } catch (error) {
-      console.error('Error sharing quiz:', error);
+      console.error("Error sharing quiz:", error);
       toast.error("Failed to share quiz. Please try again.");
     }
   }, []);
 
   const handleCreateQuiz = useCallback(() => {
-    if(!session) {
-      router.push("/signup")
-    }else{
+    if (!session) {
+      router.push("/signup");
+    } else {
       router.push("/quiz/create");
     }
-  }, [router]);
+  }, [router, session]);
 
   const handleDeleteQuiz = useCallback(async (quizId: string) => {
     if (!quizId) return;
-    
+
     setIsDeleting(true);
     try {
       await axiosInstance.delete(`/api/v1/quiz/delete-quiz/${quizId}`);
       toast.success("Quiz deleted successfully!");
-      quizes.filter(quiz => quiz.id !== quizId)
+      setQuizes(prev => prev.filter(quiz => quiz.id !== quizId));
     } catch (error) {
-      console.error('Delete error:', error);
+      console.error("Delete error:", error);
       toast.error("Could not delete the quiz. Please try again.");
     } finally {
       setIsDeleting(false);
       setShowDeleteModal(false);
       setSelectedId(null);
     }
-  }, [router]);
+  }, []);
 
   const openDeleteModal = useCallback((quizId: string) => {
-    console.log("Delete modal open")
     setSelectedId(quizId);
     setShowDeleteModal(true);
   }, []);
@@ -138,82 +187,23 @@ export default function HomePage({ quizes, session, totalUsers }: HomePageProps)
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <Header 
-          title="QuizMaster Dashboard" 
-          subtitle="Create, play, and share amazing quizzes with the world"
-        />
+        <Header title="Dashboard" subtitle="Create, play, and share amazing quizzes with the world" />
 
-        {/* Quick Actions */}
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
-          <Button 
-            size="lg" 
-            onClick={handleCreateQuiz} 
-            className="flex-1 sm:flex-initial"
-            aria-label="Create a new quiz"
-          >
-            <Plus className="w-5 h-5 mr-2" />
-            Create New Quiz
+          <Button size="lg" onClick={handleCreateQuiz} className="flex-1 sm:flex-initial">
+            <Plus className="w-5 h-5 mr-2" /> Create New Quiz
           </Button>
         </div>
 
-        {/* Stats Overview */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <Link href="/quiz/myQuizzes" className="block">
-            <StatsCard 
-              icon={Trophy} 
-              label="Quizzes Created" 
-              value={userQuizzes.length} 
-              color="bg-gradient-to-r from-purple-600 to-pink-600"
-            />
+            <StatsCard icon={Trophy} label="Quizzes Created" value={userQuizzesLength} color="bg-gradient-to-r from-purple-600 to-pink-600" />
           </Link>
-          <StatsCard 
-            icon={Users} 
-            label="Total Users" 
-            value={totalUsers}
-            color="bg-gradient-to-r from-blue-600 to-cyan-600"
-          />
-          <StatsCard 
-            icon={Eye} 
-            label="Quiz Attempts" 
-            value={totalAttempts} 
-            color="bg-gradient-to-r from-green-600 to-teal-600"
-          />
-          <StatsCard 
-            icon={Star} 
-            label="Your Quizzes" 
-            value={userQuizzes.length} 
-            color="bg-gradient-to-r from-orange-600 to-red-600"
-          />
+          <StatsCard icon={Users} label="Total Users" value={totalUsers} color="bg-gradient-to-r from-blue-600 to-cyan-600" />
+          <StatsCard icon={Eye} label="Quiz Attempts" value={totalAttempts} color="bg-gradient-to-r from-green-600 to-teal-600" />
+          <StatsCard icon={Star} label="Your Quizzes" value={userQuizzes.length} color="bg-gradient-to-r from-orange-600 to-red-600" />
         </div>
 
-        {/* My Quizzes Section */}
-        {userQuizzes.length > 0 && (
-          <section className="mb-12">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-white">My Quizzes</h2>
-              <Link href="/quiz/myQuizzes">
-                <Button variant="ghost" size="sm">
-                  View All
-                </Button>
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 w-[85%] md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {userQuizzes.slice(0, 6).map(quiz => (
-                <QuizCard 
-                  key={quiz.id} 
-                  quiz={quiz} 
-                  onPlay={showStats}
-                  onShare={() => handleShareQuiz(quiz.id as string, quiz.name)}
-                  isOwned={true}
-                  onDelete={() => openDeleteModal(quiz.id as string)}
-                />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Discover Quizzes Section */}
         <section>
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-white">Discover Quizzes</h2>
@@ -223,18 +213,13 @@ export default function HomePage({ quizes, session, totalUsers }: HomePageProps)
             </div>
           </div>
 
-          <FilterBar
-            activeFilter={activeFilter}
-            onFilterChange={setActiveFilter}
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-          />
+          <FilterBar activeFilter={activeFilter} onFilterChange={setActiveFilter} searchTerm={searchTerm} onSearchChange={setSearchTerm} />
 
           <div className="grid grid-cols-1 w-[85%] md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredQuizzes.map(quiz => (
-              <QuizCard 
-                key={quiz.id} 
-                quiz={quiz} 
+              <QuizCard
+                key={quiz.id}
+                quiz={quiz}
                 onPlay={handlePlayQuiz}
                 onShare={() => handleShareQuiz(quiz.id as string, quiz.name)}
                 isOwned={quiz.createdById === session?.user.id}
@@ -250,20 +235,19 @@ export default function HomePage({ quizes, session, totalUsers }: HomePageProps)
                 <p className="text-lg mb-2">No quizzes found</p>
                 <p className="text-sm">Try adjusting your search terms or filters</p>
               </div>
-              <Button variant="ghost" onClick={clearFilters}>
-                Clear Filters
-              </Button>
+              <Button variant="ghost" onClick={clearFilters}>Clear Filters</Button>
             </div>
           )}
+
+          {hasMore && <div ref={loaderRef} className="h-10" />}
         </section>
       </div>
 
-      {/* Delete Confirmation Modal */}
-      {(showDeleteModal === true) && selectedId && (
-        <DeleteModal 
+      {showDeleteModal && selectedId && (
+        <DeleteModal
           isOpen={showDeleteModal}
           onClose={closeDeleteModal}
-          onConfirm={() => handleDeleteQuiz(selectedId!)}
+          onConfirm={() => handleDeleteQuiz(selectedId)}
           itemType="Quiz"
           isLoading={isDeleting}
         />

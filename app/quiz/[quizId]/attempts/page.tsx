@@ -46,11 +46,17 @@ export default async function QuizAttemptsPage({ params }: { params: Promise<{ q
     }
   })
 
-  if (!attempts || attempts[0].quiz.createdById != session?.user.id) {
-    return <div className="flex items-center justify-center">
-      <NotVerified />
+  if (!attempts || attempts.length === 0 || !attempts[0].quiz || attempts[0].quiz.createdById !== session?.user.id) {
+    return (
+      <div className="flex justify-center">
+        <div className="mt-10">
+        <NotVerified />
+        </div>
+        
       </div>
+    );
   }
+  
 
   return (
     <div className="p-6 max-w-4xl mx-auto">

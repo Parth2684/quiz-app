@@ -50,7 +50,7 @@ export const NotVerified = () => {
             
             <Button 
               variant="outline" 
-              onClick={() => router.push('/')} 
+              onClick={() => router.push('/signin')} 
               className="w-full"
             >
               Go Home
