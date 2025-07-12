@@ -17,9 +17,10 @@ import { axiosInstance } from "@/lib/axiosInstance";
 interface HomePageProps {
   session?: Session | null;
   totalUsers: number;
+  totalQuizCount: number
 }
 
-export default function HomePage({ session, totalUsers }: HomePageProps) {
+export default function HomePage({ session, totalUsers, totalQuizCount }: HomePageProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState('All');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -197,11 +198,11 @@ export default function HomePage({ session, totalUsers }: HomePageProps) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <Link href="/quiz/myQuizzes" className="block">
-            <StatsCard icon={Trophy} label="Quizzes Created" value={userQuizzesLength} color="bg-gradient-to-r from-purple-600 to-pink-600" />
+            <StatsCard icon={Trophy} label="Your Quizzes" value={userQuizzesLength} color="bg-gradient-to-r from-purple-600 to-pink-600" />
           </Link>
           <StatsCard icon={Users} label="Total Users" value={totalUsers} color="bg-gradient-to-r from-blue-600 to-cyan-600" />
           <StatsCard icon={Eye} label="Quiz Attempts" value={totalAttempts} color="bg-gradient-to-r from-green-600 to-teal-600" />
-          <StatsCard icon={Star} label="Your Quizzes" value={userQuizzes.length} color="bg-gradient-to-r from-orange-600 to-red-600" />
+          <StatsCard icon={Star} label="Total Quizzes" value={totalQuizCount} color="bg-gradient-to-r from-orange-600 to-red-600" />
         </div>
 
         <section>

@@ -17,7 +17,7 @@ export default async function Home() {
     }
 
     async function countPeople () {
-        const totalUsers = await prisma.user.count()
+        const [totalUsers, totalQuizCount] = await Promise.all([prisma.user.count(), prisma.quiz.count()])
         return totalUsers;
     }
 
