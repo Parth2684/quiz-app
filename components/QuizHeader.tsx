@@ -11,7 +11,7 @@ interface QuizHeaderProps {
 
 export const QuizHeader = ({ name, description, onNameChange, onDescriptionChange }: QuizHeaderProps) => {
     return (
-      <Card className="mb-8 bg-gradient-to-br from-purple-500/20 to-pink-500/20">
+      <Card className="mb-5 bg-gradient-to-br from-purple-500/20 to-pink-500/20">
         <div className="space-y-6">
           <InputBar
             placeholder="Quiz Name..."
