@@ -66,7 +66,7 @@ export const POST = async (req: NextRequest) => {
         {
             headers: {
               "Content-Type": "application/json",
-              "X-goog-api-key": process.env.GEMINI_API_KEY
+              "X-goog-api-key": process.env.GEMINI_API_KEY as string
             }
           }
         )
