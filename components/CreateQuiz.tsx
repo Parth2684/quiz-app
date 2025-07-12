@@ -8,6 +8,7 @@ import { Question } from "./Question";
 import { axiosInstance } from "@/lib/axiosInstance";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import CreateViaAi from "./CreateViaAi";
 
 
 
@@ -27,6 +28,8 @@ export const CreateQuiz = () => {
     const router = useRouter()
     const [previewMode, setPreviewMode] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [showAiModal, setShowAiModal] = useState(false);
+
   
     const updateQuizName = (name: string) => {
       setQuiz(prev => ({ ...prev, name }));
@@ -190,12 +193,25 @@ export const CreateQuiz = () => {
             />
           ))}
   
-          <div className="flex justify-center">
-            <Button variant="primary" onClick={addQuestion} size="lg" className="mb-10">
+            <div className="flex justify-center gap-4 mb-10">
+            <Button variant="primary" onClick={addQuestion} size="lg">
               <Plus size={20} />
               Add Question
             </Button>
+
+            <Button variant="secondary" onClick={() => setShowAiModal(true)} size="lg">
+              ✨ Generate with AI
+            </Button>
+            {showAiModal && (
+            <CreateViaAi 
+              setShowModal={setShowAiModal} 
+              setQuiz={setQuiz}
+              quiz={quiz}
+            />
+          )}
+
           </div>
+
         </div>
       </div>
     );
