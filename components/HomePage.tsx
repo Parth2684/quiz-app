@@ -129,7 +129,7 @@ export default function HomePage({ session, totalUsers, totalQuizCount }: HomePa
 
   const handleShareQuiz = useCallback(async (quizId: string, quizName: string) => {
     try {
-      const shareUrl = `${window.location.origin}/quiz/${quizId}`;
+      const shareUrl = `${window.location.origin}/quiz/play/${quizId}`;
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
       if (navigator.share && isMobile) {
