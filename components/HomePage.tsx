@@ -216,7 +216,7 @@ export default function HomePage({ session, totalUsers, totalQuizCount }: HomePa
 
           <FilterBar activeFilter={activeFilter} onFilterChange={setActiveFilter} searchTerm={searchTerm} onSearchChange={setSearchTerm} />
 
-          <div className="grid grid-cols-1 w-[85%] md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:w-[85%] md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredQuizzes.map(quiz => (
               <QuizCard
                 key={quiz.id}

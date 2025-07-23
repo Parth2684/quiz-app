@@ -33,7 +33,7 @@ export const QuizCard = ({ quiz, onPlay, onShare, isOwned = false, onDelete }: Q
           </Button>
           
           {isOwned && <>
-            <Button size="sm" variant="outline" onClick={onDelete}>
+            <Button size="sm" variant="outline" onClick={onDelete} >
               <Trash />
             </Button>
           </>}
