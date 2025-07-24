@@ -117,12 +117,21 @@ export default function HomePage({ session, totalUsers, totalQuizCount }: HomePa
   }, [quizes, searchTerm, activeFilter, session?.user.id]);
 
   const handlePlayQuiz = useCallback(
-    (quizId: string, createdById: string) => {
+    (quiz: QuizWithoutQuestionAnswer, createdById: string) => {
       if (createdById === session?.user.id) {
-        router.push(`/quiz/${quizId}/attempts`);
-      } else {
-        router.push(`/quiz/play/${quizId}`);
+        router.push(`/quiz/${quiz.id}/attempts`);
+      }else {
+        const userAttempt = quiz.quizAttempt.find(
+          (attempt) => attempt.userId === session?.user.id
+        );
+  
+        if (userAttempt) {
+          router.push(`/quiz/${quiz.id}/attempts/${userAttempt.id}`);
+        }
+       else {
+        router.push(`/quiz/play/${quiz.id}`);
       }
+    }
     },
     [router, session?.user.id]
   );
@@ -224,6 +233,7 @@ export default function HomePage({ session, totalUsers, totalQuizCount }: HomePa
                 onPlay={handlePlayQuiz}
                 onShare={() => handleShareQuiz(quiz.id as string, quiz.name)}
                 isOwned={quiz.createdById === session?.user.id}
+                isAttempted={Boolean(quiz.quizAttempt.filter(attempt => attempt.userId == session?.user.id))}
                 onDelete={quiz.createdById === session?.user.id ? () => openDeleteModal(quiz.id as string) : undefined}
               />
             ))}
