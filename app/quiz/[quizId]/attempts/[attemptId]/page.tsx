@@ -26,9 +26,8 @@ export default async function AttemptDetailsPage({
     }
   })
 
-  if (!attempt || attempt.quiz.createdById != session?.user.id) return <p className="text-white">Attempt not found</p>;
-
-  return (
+  
+  if(attempt && (attempt.quiz.createdById == session?.user.id || attempt.userId == session?.user.id)){ return (
     <div className="p-6 max-w-4xl mx-auto print:text-xs print:mt-0 print:mb-2 print:pt-0 leading-snug">
       <div className="mb-4 text-center">
       <h2 className="text-lg font-bold text-white print:text-black print:text-base">
@@ -72,4 +71,8 @@ export default async function AttemptDetailsPage({
       </div>
     </div>
   );
+}
+  else{
+    return <p className="text-white">Attempt not found</p>;
+  }
 }

@@ -97,7 +97,7 @@ export default async function RootLayout({
       <body>
         <div className="min-h-screen bg-linear-to-br from-purple-900 via-blue-900 to-indigo-900 text-white overflow-hidden relative print:pt-0 print:mt-0 print:mb-0 print:pl-0 print:pr-0">
           <Background />
-          <TopBar isSignnedIn={Boolean(isSignedIn)} />
+          <TopBar isSignnedIn={Boolean(isSignedIn)} session={session}/>
           <RouterLoadingWrapper>
           <RouterPushPatch>
             <LoadingOverlay />
