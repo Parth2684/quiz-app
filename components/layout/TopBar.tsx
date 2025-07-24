@@ -74,7 +74,7 @@ export default function TopBar({ isSignnedIn, session }: { isSignnedIn: boolean,
                   >
                     <a
                       href="/profile"
-                      className="block px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors border-b border-blue-500"
+                      className="block px-4 py-2 text-sm text-purple-700 hover:bg-white/10 transition-colors border-b border-blue-500"
                       onClick={() => setIsDropdownOpen(false)}
                     >
                       Profile

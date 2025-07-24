@@ -31,7 +31,7 @@ export default async function AttemptDetailsPage({
     <div className="p-6 max-w-4xl mx-auto print:text-xs print:mt-0 print:mb-2 print:pt-0 leading-snug">
       <div className="mb-4 text-center">
       <h2 className="text-lg font-bold text-white print:text-black print:text-base">
-        {attempt.user.name}'s Attempt
+        {attempt.user.name}'s Attempt on {attempt.quiz.name}
       </h2>
       <p className="text-sm text-gray-400 print:text-black print:text-xs">
         {new Date(attempt.attemptedAt).toLocaleString()}
@@ -44,8 +44,8 @@ export default async function AttemptDetailsPage({
       <div className="space-y-6">
         {attempt.answers.map((ans, index) => (
           <Card key={ans.id}>
-            <div className="text-white space-y-1">
-              <p className="font-light">Q{index + 1}: {ans.question.question}</p>
+            <div className="text-white space-y-1 print:text-black print:font-bold">
+              <p className="font-light ">Q{index + 1}: {ans.question.question}</p>
               <div className="flex flex-col gap-1">
                 {ans.question.options.map((opt) => {
                   const isSelected = opt.id === ans.optionId;
