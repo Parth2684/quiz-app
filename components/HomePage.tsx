@@ -233,7 +233,7 @@ export default function HomePage({ session, totalUsers, totalQuizCount }: HomePa
                 onPlay={handlePlayQuiz}
                 onShare={() => handleShareQuiz(quiz.id as string, quiz.name)}
                 isOwned={quiz.createdById === session?.user.id}
-                isAttempted={Boolean(quiz.quizAttempt.filter(attempt => attempt.userId == session?.user.id))}
+                isAttempted={quiz.quizAttempt.some(attempt => attempt.userId === session?.user.id)}
                 onDelete={quiz.createdById === session?.user.id ? () => openDeleteModal(quiz.id as string) : undefined}
               />
             ))}
