@@ -30,7 +30,7 @@ export const QuizCard = ({ quiz, onPlay, onShare, isOwned = false, onDelete, isA
         <div className="flex gap-2">
           <Button size="sm" onClick={() => onPlay(quiz, quiz.createdById as string)}>
             <Play className="w-4 h-4" />
-            {isOwned || isAttempted ? "Show Stats" : "Play" }
+            {(isOwned || isAttempted) ? "Show Stats" : "Play" }
           </Button>
           
           {isOwned && <>
